@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+  mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+
+  nginx:
+    image: nginx:1.15.11
+    volumes:
+     - .docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+     - ./:/var/www/symshop.loc
+    links:
+     - php-fpm
+    depends_on:
+     - php-fpm
+    ports:
+     - "8045:8001"
+
+  php-cli:
+    build: ./.docker/php-cli
+    volumes:
+     - ./:/var/www/symshop.loc
+     - .docker/php-cli/php.ini:/usr/local/etc/php/php.ini
+    environment:
+      PHP_IDE_CONFIG: serverName=symshop
+
+  php-fpm:
+    build: ./.docker/php-fpm
+    volumes:
+     - ./:/var/www/symshop.loc
+     - .docker/php-fpm:/usr/local/etc/php/php.ini
+    environment:
+      PHP_IDE_CONFIG: serverName=symshop
