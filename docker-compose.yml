@@ -28,7 +28,7 @@ services:
      - .docker/php-cli/php.ini:/usr/local/etc/php/php.ini
     environment:
       PHP_IDE_CONFIG: serverName=symshop
-    tty: true
+    tty: true 
 
   php-fpm:
     build: ./.docker/php-fpm
