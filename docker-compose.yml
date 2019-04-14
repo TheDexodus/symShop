@@ -28,7 +28,8 @@ services:
      - .docker/php-cli/php.ini:/usr/local/etc/php/php.ini
     environment:
       PHP_IDE_CONFIG: serverName=symshop
-    tty: true 
+      XDEBUG_CONFIG: remote_host=${XDEBUG_REMOTE_HOST}
+    tty: true
 
   php-fpm:
     build: ./.docker/php-fpm
@@ -37,3 +38,4 @@ services:
      - .docker/php-fpm:/usr/local/etc/php/php.ini
     environment:
       PHP_IDE_CONFIG: serverName=symshop
+      XDEBUG_CONFIG: remote_host=${XDEBUG_REMOTE_HOST}
