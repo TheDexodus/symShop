@@ -8,6 +8,10 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - .docker/mysql:/var/lib/mysql
+    ports:
+      - "3306:3306"
 
   nginx:
     image: nginx:1.15.11
@@ -19,7 +23,7 @@ services:
     depends_on:
      - php-fpm
     ports:
-     - "8045:8001"
+     - "8666:8001"
 
   php-cli:
     build: ./.docker/php-cli
