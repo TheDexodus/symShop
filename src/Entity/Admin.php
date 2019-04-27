@@ -3,8 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use mysql_xdevapi\Collection;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AdminRepository")
@@ -30,9 +30,14 @@ class Admin implements UserInterface
 
     /**
      * @var string The hashed password
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", length=32)
      */
     private $password;
+
+    /**
+     * @var string
+     */
+    private $plainPassword;
 
     public function getId(): ?int
     {
@@ -90,7 +95,9 @@ class Admin implements UserInterface
 
     public function setPassword(string $password): self
     {
-        $this->password = $password;
+        if ($password !== null) {
+            $this->password = $password;
+        }
 
         return $this;
     }
@@ -110,5 +117,15 @@ class Admin implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword($plainPassword): void
+    {
+        $this->plainPassword = $plainPassword;
     }
 }

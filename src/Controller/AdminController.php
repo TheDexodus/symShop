@@ -39,6 +39,7 @@ class AdminController extends AbstractController
      */
     public function editAdminAction(Request $request, Admin $admin)
     {
+        $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(AdminType::class, $admin);
 
         $form->handleRequest($request);
@@ -46,9 +47,15 @@ class AdminController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
+            if (($findedAdmin = $em->getRepository(Admin::class)->findOneBy([
+                    'email' => $data->getEmail()
+                ])) !== null && $findedAdmin->getId() !== $admin->getId()) {
+                throw new \Exception('Email is used');
+            }
+
             $admin->setEmail($data->getEmail());
-            if (!empty($data->getPassword())) {
-                $admin->setPassword(password_hash($data->getPassword(), PASSWORD_BCRYPT));
+            if (!empty($data->getPlainPassword())) {
+                $admin->setPassword(password_hash($data->getPlainPassword(), PASSWORD_BCRYPT));
             }
             $admin->setRoles($data->getRoles());
 
@@ -85,11 +92,20 @@ class AdminController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
+            if ($em->getRepository(Admin::class)->findOneBy([
+                'email' => $data->getEmail()
+            ]) !== null) {
+                throw new \Exception('Email is used');
+            }
+
+            if ($data->getPlainPassword() === null) {
+                throw new \Exception('Password is empty');
+            }
 
             $admin = new Admin();
 
             $admin->setEmail($data->getEmail());
-            $admin->setPassword(password_hash($data->getPassword(), PASSWORD_BCRYPT));
+            $admin->setPassword(password_hash($data->getPlainPassword(), PASSWORD_BCRYPT));
             $admin->setRoles($data->getRoles());
 
             $em->persist($admin);

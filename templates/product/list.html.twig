@@ -1,6 +1,4 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Admin Panel{% endblock %}
+{% extends 'admin.html.twig' %}
 
 {% block body %}
 <style>
@@ -15,6 +13,7 @@
 
 <div class="example-wrapper">
     <h1>Products(<a href="{{ path('createProduct') }}">Create new</a>)</h1>
+    <h3><a href="{{ path('entityList') }}">Back to list</a></h3>
 
     <table>
         <tr>

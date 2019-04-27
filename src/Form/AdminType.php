@@ -20,8 +20,9 @@ class AdminType extends AbstractType
     {
         $builder
             ->add('email', EmailType::class)
-            ->add('password', PasswordType::class, [
-                'required' => true,
+            ->add('plainPassword', PasswordType::class, [
+                'required' => false,
+                'mapped' => true,
             ])
             ->add('roles', CollectionType::class, [
                 'entry_type' => TextType::class,

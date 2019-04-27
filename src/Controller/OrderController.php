@@ -34,11 +34,17 @@ class OrderController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
+            $price = 0;
+
+            foreach ($data->getProducts() as $product) {
+                $price += $product->getPrice();
+            }
+
             $order->setStatus($data->getStatus())
                 ->setUserId($data->getUserId())
                 ->setCreatedDate($data->getCreatedDate())
                 ->setProducts($data->getProducts())
-                ->setLaterPrice(0);
+                ->setLaterPrice($price);
 
             $this->getDoctrine()->getManager()->flush();
             return $this->redirectToRoute('listOrder');
@@ -76,11 +82,17 @@ class OrderController extends AbstractController
 
             $order = new Ord();
 
+            $price = 0;
+
+            foreach ($data->getProducts() as $product) {
+                $price += $product->getPrice();
+            }
+
             $order->setStatus($data->getStatus())
                 ->setUserId($data->getUserId())
                 ->setCreatedDate($data->getCreatedDate())
                 ->setProducts($data->getProducts())
-                ->setLaterPrice(0);
+                ->setLaterPrice($price);
 
             $em->persist($order);
             $em->flush();

@@ -1,0 +1,39 @@
+{% extends 'admin.html.twig' %}
+
+{% block body %}
+<style>
+    table {
+        border-collapse: collapse;
+    }
+
+    table, th, td {
+        border: 1px solid black;
+    }
+</style>
+
+<div class="example-wrapper">
+    <h1>Entity List</h1>
+    <table>
+        <tr>
+            <th>Entity</th>
+            <th>Action</th>
+        </tr>
+        <tr>
+            <td>Admin</td>
+            <td><a href="{{ path('listAdmin') }}">List</a></td>
+        </tr>
+        <tr>
+            <td>User</td>
+            <td><a href="{{ path('listUser') }}">List</a></td>
+        </tr>
+        <tr>
+            <td>Product</td>
+            <td><a href="{{ path('listProduct') }}">List</a></td>
+        </tr>
+        <tr>
+            <td>Order</td>
+            <td><a href="{{ path('listOrder') }}">List</a></td>
+        </tr>
+    </table>
+</div>
+{% endblock %}
