@@ -1,0 +1,35 @@
+{% extends 'admin.html.twig' %}
+
+{% block body %}
+<style>
+    table {
+        border-collapse: collapse;
+    }
+
+    table, th, td {
+        border: 1px solid black;
+    }
+</style>
+
+<div class="example-wrapper">
+    <h1>Admins(<a href="{{ path('createAdmin') }}">Create new</a>)</h1>
+    <h3><a href="{{ path('entityList') }}">Back to list</a></h3>
+
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Actions</th>
+        </tr>
+        {% for admin in admins %}
+            <tr>
+                <td>{{ admin.getEmail() }}</td>
+                <td>
+                    <a href="{{ path('editAdmin', {'id': admin.getId()}) }}">Edit</a>
+                    <a href="{{ path('removeAdmin', {'id': admin.getId()}) }}">Remove</a>
+                </td>
+            </tr>
+        {% endfor %}
+
+    </table>
+</div>
+{% endblock %}
