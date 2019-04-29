@@ -37,10 +37,11 @@ class AdminController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
+            $findedAdmin = $em->getRepository(Admin::class)->findOneBy([
+                'email' => $data->getEmail()
+            ]);
 
-            if (($findedAdmin = $em->getRepository(Admin::class)->findOneBy([
-                    'email' => $data->getEmail()
-                ])) !== null && $findedAdmin->getId() !== $admin->getId()) {
+            if ($findedAdmin !== null && $findedAdmin->getId() !== $admin->getId()) {
                 throw new \Exception('Email is used');
             }
 
@@ -93,12 +94,13 @@ class AdminController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            if ($em->getRepository(Admin::class)->findOneBy([
-                    'email' => $data->getEmail()
-                ]) !== null) {
+            $admin = $em->getRepository(Admin::class)->findOneBy([
+                'email' => $data->getEmail()
+            ]);
+
+            if ($admin !== null) {
                 throw new \Exception('Email is used');
             }
-
             if ($data->getPlainPassword() === null) {
                 throw new \Exception('Password is empty');
             }
@@ -112,7 +114,6 @@ class AdminController extends AbstractController
             }
 
             $admin = new Admin();
-
             $admin->setEmail($data->getEmail());
             $admin->setPassword(password_hash($data->getPlainPassword(), PASSWORD_BCRYPT));
             $admin->setRoles($roles);
