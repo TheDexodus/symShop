@@ -123,8 +123,7 @@ class AdminController extends AbstractController
         }
 
         return $this->render('admin/edit.html.twig', [
-                'form' => $form->createView(),
-            ]
-        );
+            'form' => $form->createView(),
+        ]);
     }
 }

@@ -20,7 +20,7 @@ class OrderType extends AbstractType
     {
         $builder
             ->add('status', ChoiceType::class, [
-                'choices'  => [
+                'choices' => [
                     'Waiting' => Ord::STATUS_WAITING,
                     'Canceled' => Ord::STATUS_CANCELED,
                     'Success' => Ord::STATUS_SUCCESS,

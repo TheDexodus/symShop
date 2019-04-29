@@ -105,8 +105,7 @@ class OrderController extends AbstractController
         }
 
         return $this->render('order/edit.html.twig', [
-                'form' => $form->createView(),
-            ]
-        );
+            'form' => $form->createView(),
+        ]);
     }
 }

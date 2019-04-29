@@ -36,19 +36,19 @@ class Ord
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\Choice(choices = { "success", "waiting", "canceled"})
+     * @Assert\Choice(choices = {"success", "waiting", "canceled"})
      */
     private $status;
 
     /**
      * @ORM\Column(type="date")
      */
-    private $created_date;
+    private $createdDate;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $later_price;
+    private $laterPrice;
 
     public function __construct()
     {
@@ -119,24 +119,24 @@ class Ord
 
     public function getCreatedDate(): ?\DateTimeInterface
     {
-        return $this->created_date;
+        return $this->createdDate;
     }
 
-    public function setCreatedDate(\DateTimeInterface $created_date): self
+    public function setCreatedDate(\DateTimeInterface $createdDate): self
     {
-        $this->created_date = $created_date;
+        $this->createdDate = $createdDate;
 
         return $this;
     }
 
     public function getLaterPrice(): ?float
     {
-        return $this->later_price;
+        return $this->laterPrice;
     }
 
-    public function setLaterPrice(float $later_price): self
+    public function setLaterPrice(float $laterPrice): self
     {
-        $this->later_price = $later_price;
+        $this->laterPrice = $laterPrice;
 
         return $this;
     }

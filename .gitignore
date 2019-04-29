@@ -2,3 +2,4 @@
 /var
 /.idea
 /.docker/mysql
+/public/bundles

@@ -3,8 +3,6 @@
 namespace App\Form;
 
 use App\Entity\Admin;
-use App\Entity\Product;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -29,8 +27,7 @@ class AdminType extends AbstractType
                 'required' => false,
                 'allow_add' => true,
             ])
-            ->add('save', SubmitType::class, ['label' => 'Save changes']);
-        ;
+            ->add('save', SubmitType::class, ['label' => 'Save changes']);;
     }
 
     public function configureOptions(OptionsResolver $resolver)
