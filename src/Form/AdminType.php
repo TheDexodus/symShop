@@ -26,6 +26,7 @@ class AdminType extends AbstractType
             ])
             ->add('roles', CollectionType::class, [
                 'entry_type' => TextType::class,
+                'required' => false,
                 'allow_add' => true,
             ])
             ->add('save', SubmitType::class, ['label' => 'Save changes']);

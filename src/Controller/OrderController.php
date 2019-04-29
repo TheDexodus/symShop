@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Ord;
 use App\Form\OrderType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,6 +13,7 @@ class OrderController extends AbstractController
 {
     /**
      * @Route("/admin/order/list", name="listOrder")
+     * @Security("is_granted('ROLE_ORDER_VIEW')")
      */
     public function getOrdersAction()
     {
@@ -24,6 +26,7 @@ class OrderController extends AbstractController
 
     /**
      * @Route("/admin/order/edit/{id}", name="editOrder")
+     * @Security("is_granted('ROLE_ORDER_EDIT')")
      */
     public function editOrderAction(Request $request, Ord $order)
     {
@@ -57,6 +60,7 @@ class OrderController extends AbstractController
 
     /**
      * @Route("/admin/order/remove/{id}", name="removeOrder")
+     * @Security("is_granted('ROLE_ORDER_EDIT')")
      */
     public function removeOrderAction(Ord $order)
     {
@@ -69,6 +73,7 @@ class OrderController extends AbstractController
 
     /**
      * @Route("/admin/order/create", name="createOrder")
+     * @Security("is_granted('ROLE_ORDER_EDIT')")
      */
     public function createOrderAction(Request $request)
     {

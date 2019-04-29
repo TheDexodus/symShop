@@ -12,18 +12,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class AdminController extends AbstractController
 {
     /**
-     * @Route("/admin", name="admin")
-     * @Security("is_granted('ROLE_ADMIN')")
-     */
-    public function index()
-    {
-        return $this->render('admin/index.html.twig', [
-            'controller_name' => 'AdminController',
-        ]);
-    }
-
-    /**
      * @Route("/admin/admin/list", name="listAdmin")
+     * @Security("is_granted('ROLE_ADMIN_VIEW')")
      */
     public function getAdminsAction()
     {
@@ -36,6 +26,7 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/admin/admin/edit/{id}", name="editAdmin")
+     * @Security("is_granted('ROLE_ADMIN_EDIT')")
      */
     public function editAdminAction(Request $request, Admin $admin)
     {
@@ -53,11 +44,19 @@ class AdminController extends AbstractController
                 throw new \Exception('Email is used');
             }
 
+            $roles = [];
+            foreach ($data->getRoles() as $role) {
+                if (empty($role)) {
+                    continue;
+                }
+                $roles[] = $role;
+            }
+
             $admin->setEmail($data->getEmail());
             if (!empty($data->getPlainPassword())) {
                 $admin->setPassword(password_hash($data->getPlainPassword(), PASSWORD_BCRYPT));
             }
-            $admin->setRoles($data->getRoles());
+            $admin->setRoles($roles);
 
             $this->getDoctrine()->getManager()->flush();
             return $this->redirectToRoute('listAdmin');
@@ -70,6 +69,7 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/admin/admin/remove/{id}", name="removeAdmin")
+     * @Security("is_granted('ROLE_ADMIN_EDIT')")
      */
     public function removeAdminAction(Admin $admin)
     {
@@ -82,6 +82,7 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/admin/admin/create", name="createAdmin")
+     * @Security("is_granted('ROLE_ADMIN_EDIT')")
      */
     public function createAdminAction(Request $request)
     {
@@ -93,8 +94,8 @@ class AdminController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             if ($em->getRepository(Admin::class)->findOneBy([
-                'email' => $data->getEmail()
-            ]) !== null) {
+                    'email' => $data->getEmail()
+                ]) !== null) {
                 throw new \Exception('Email is used');
             }
 
@@ -102,11 +103,19 @@ class AdminController extends AbstractController
                 throw new \Exception('Password is empty');
             }
 
+            $roles = [];
+            foreach ($data->getRoles() as $role) {
+                if (empty($role)) {
+                    continue;
+                }
+                $roles[] = $role;
+            }
+
             $admin = new Admin();
 
             $admin->setEmail($data->getEmail());
             $admin->setPassword(password_hash($data->getPlainPassword(), PASSWORD_BCRYPT));
-            $admin->setRoles($data->getRoles());
+            $admin->setRoles($roles);
 
             $em->persist($admin);
             $em->flush();

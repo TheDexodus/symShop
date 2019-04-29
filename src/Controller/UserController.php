@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,6 +13,7 @@ class UserController extends AbstractController
 {
     /**
      * @Route("/admin/user/list", name="listUser")
+     * @Security("is_granted('ROLE_USER_VIEW')")
      */
     public function getUsersAction()
     {
@@ -24,6 +26,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/admin/user/edit/{id}", name="editUser")
+     * @Security("is_granted('ROLE_USER_EDIT')")
      */
     public function editUserAction(Request $request, User $user)
     {
@@ -49,6 +52,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/admin/user/remove/{id}", name="removeUser")
+     * @Security("is_granted('ROLE_USER_EDIT')")
      */
     public function removeUserAction(User $user)
     {
@@ -61,6 +65,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/admin/user/create", name="createUser")
+     * @Security("is_granted('ROLE_USER_EDIT')")
      */
     public function createUserAction(Request $request)
     {
