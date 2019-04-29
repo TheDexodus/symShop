@@ -32,11 +32,6 @@ class User
      */
     private $email;
 
-    public function __construct()
-    {
-        $this->orders = new ArrayCollection();
-    }
-
     public function getId(): ?int
     {
         return $this->id;
