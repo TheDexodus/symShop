@@ -109,4 +109,43 @@ class OrderController extends AbstractController
             ]
         );
     }
+
+    /**
+     * @Route("admin/order/statistics", name="statisticsOrder")
+     * @Security("is_granted('ROLE_ORDER_VIEW')")
+     */
+    public function statisticsAction() {
+        $em = $this->getDoctrine()->getManager();
+        $orders = $em->getRepository(Ord::class)->findAll();
+
+        $statistics = [];
+        $usersStats = [];
+        foreach ($orders as $order) {
+            $date = $order->getCreatedDate()->format('yyyy-MM-dd');
+            if (!isset($statistics[$date])) {
+                $statistics[$date]['created'] = 0;
+                $statistics[$date]['allPrice'] = 0;
+                $statistics[$date][Ord::STATUS_SUCCESS . 'Price'] = 0;
+                $statistics[$date][Ord::STATUS_WAITING . 'Price'] = 0;
+                $statistics[$date][Ord::STATUS_CANCELED . 'Price'] = 0;
+                $statistics[$date][Ord::STATUS_SUCCESS . 'Created'] = 0;
+                $statistics[$date][Ord::STATUS_WAITING . 'Created'] = 0;
+                $statistics[$date][Ord::STATUS_CANCELED . 'Created'] = 0;
+            }
+            $statistics[$date]['date'] = $date;
+            $statistics[$date]['created'] += 1;
+            $statistics[$date]['allPrice'] += $order->getLaterPrice();
+            $statistics[$date][$order->getStatus() . 'Price'] += $order->getLaterPrice();
+            $statistics[$date][$order->getStatus() . 'Created'] += 1;
+            $usersStats[$date][$order->getUserId()] = true;
+        }
+        foreach ($usersStats as $key => $value) {
+            $statistics[$key]['usersCreated'] = count($value[$key]);
+        }
+
+        return $this->render('order/statistics.html.twig', [
+                'statistics' => $statistics,
+            ]
+        );
+    }
 }

@@ -1,0 +1,55 @@
+{% extends 'admin.html.twig' %}
+
+{% block body %}
+<style>
+    table {
+        border-collapse: collapse;
+    }
+
+    table, th, td {
+        border: 1px solid black;
+    }
+</style>
+
+<div class="example-wrapper">
+    <h1>Orders(<a href="{{ path('createOrder') }}">Create new</a>)</h1>
+    <h3><a href="{{ path('entityList') }}">Back to list</a></h3>
+
+    <table>
+        <tr>
+            <th>Status</th>
+            <th>User Id</th>
+            <th>Created date</th>
+            <th>Price</th>
+            <th>Actions</th>
+        </tr>
+        {%   for day in statistics %}
+            <tr>
+                <td>{{ day.date }}</td>
+                <td>{{ day.created }}</td>
+                <td>{{ day.allPrice }}</td>
+                <td>{{ day.usersCreated }}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>{{ day.successCreated }}</td>
+                <td>{{ day.successPrice }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>{{ day.waitingCreated }}</td>
+                <td>{{ day.waitingPrice }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>{{ day.canceledCreated }}</td>
+                <td>{{ day.canceledPrice }}</td>
+                <td></td>
+            </tr>
+        {% endfor %}
+
+    </table>
+</div>
+{% endblock %}
