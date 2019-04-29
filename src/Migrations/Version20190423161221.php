@@ -9,7 +9,7 @@ use Doctrine\Migrations\AbstractMigration;
 
 final class Version20190423161221 extends AbstractMigration
 {
-    public function up(Schema $schema) : void
+    public function up(Schema $schema): void
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
@@ -22,7 +22,7 @@ final class Version20190423161221 extends AbstractMigration
         $this->addSql('ALTER TABLE ord_product ADD CONSTRAINT FK_99B86CA64584665A FOREIGN KEY (product_id) REFERENCES product (id) ON DELETE CASCADE');
     }
 
-    public function down(Schema $schema) : void
+    public function down(Schema $schema): void
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
