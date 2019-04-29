@@ -121,7 +121,7 @@ class OrderController extends AbstractController
         $statistics = [];
         $usersStats = [];
         foreach ($orders as $order) {
-            $date = $order->getCreatedDate()->format('yyyy-MM-dd');
+            $date = $order->getCreatedDate()->format('y-m-d');
             if (!isset($statistics[$date])) {
                 $statistics[$date]['created'] = 0;
                 $statistics[$date]['allPrice'] = 0;
@@ -137,10 +137,10 @@ class OrderController extends AbstractController
             $statistics[$date]['allPrice'] += $order->getLaterPrice();
             $statistics[$date][$order->getStatus() . 'Price'] += $order->getLaterPrice();
             $statistics[$date][$order->getStatus() . 'Created'] += 1;
-            $usersStats[$date][$order->getUserId()] = true;
+            $usersStats[$date][$order->getUserId()->getId()] = true;
         }
         foreach ($usersStats as $key => $value) {
-            $statistics[$key]['usersCreated'] = count($value[$key]);
+            $statistics[$key]['usersCreated'] = count($value);
         }
 
         return $this->render('order/statistics.html.twig', [
