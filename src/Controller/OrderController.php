@@ -143,6 +143,8 @@ class OrderController extends AbstractController
             $statistics[$key]['usersCreated'] = count($value);
         }
 
+        krsort($statistics);
+
         return $this->render('order/statistics.html.twig', [
                 'statistics' => $statistics,
             ]
