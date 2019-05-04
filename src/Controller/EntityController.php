@@ -14,8 +14,6 @@ class EntityController extends AbstractController
      */
     public function listAction()
     {
-        return $this->render('entity/list.html.twig', [
-            'controller_name' => 'ListController',
-        ]);
+        return $this->render('entity/list.html.twig');
     }
 }
