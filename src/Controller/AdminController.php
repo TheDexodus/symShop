@@ -36,6 +36,9 @@ class AdminController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /**
+             * @var Admin $data
+             */
             $data = $form->getData();
             $findedAdmin = $em->getRepository(Admin::class)->findOneBy([
                 'email' => $data->getEmail(),
@@ -93,6 +96,9 @@ class AdminController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /**
+             * @var Admin $data
+             */
             $data = $form->getData();
             $admin = $em->getRepository(Admin::class)->findOneBy([
                 'email' => $data->getEmail()
