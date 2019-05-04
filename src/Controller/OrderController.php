@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Ord;
+use App\Entity\Order;
 use App\Form\OrderType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,7 +17,7 @@ class OrderController extends AbstractController
      */
     public function getOrdersAction()
     {
-        $orders = $this->getDoctrine()->getManager()->getRepository(Ord::class)->findAll();
+        $orders = $this->getDoctrine()->getManager()->getRepository(Order::class)->findAll();
 
         return $this->render('order/list.html.twig', [
             'orders' => $orders,
@@ -28,7 +28,7 @@ class OrderController extends AbstractController
      * @Route("/admin/order/edit/{id}", name="editOrder")
      * @Security("is_granted('ROLE_ORDER_EDIT')")
      */
-    public function editOrderAction(Request $request, Ord $order)
+    public function editOrderAction(Request $request, Order $order)
     {
         $form = $this->createForm(OrderType::class, $order);
 
@@ -36,7 +36,7 @@ class OrderController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             /**
-             * @var Ord $data
+             * @var Order $data
              */
             $data = $form->getData();
 
@@ -44,7 +44,7 @@ class OrderController extends AbstractController
                 ->setUserId($data->getUserId())
                 ->setCreatedDate($data->getCreatedDate())
                 ->setProducts($data->getProducts())
-                ->setLaterPrice($price);
+                ->setLaterPrice(0);
 
             $this->getDoctrine()->getManager()->flush();
             return $this->redirectToRoute('listOrder');
@@ -59,7 +59,7 @@ class OrderController extends AbstractController
      * @Route("/admin/order/remove/{id}", name="removeOrder")
      * @Security("is_granted('ROLE_ORDER_EDIT')")
      */
-    public function removeOrderAction(Ord $order)
+    public function removeOrderAction(Order $order)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($order);
@@ -81,23 +81,17 @@ class OrderController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             /**
-             * @var Ord $data
+             * @var Order $data
              */
             $data = $form->getData();
 
-            $order = new Ord();
-
-            $price = 0;
-
-            foreach ($data->getProducts() as $product) {
-                $price += $product->getPrice();
-            }
+            $order = new Order();
 
             $order->setStatus($data->getStatus())
                 ->setUserId($data->getUserId())
                 ->setCreatedDate($data->getCreatedDate())
                 ->setProducts($data->getProducts())
-                ->setLaterPrice($price);
+                ->setLaterPrice(0);
 
             $em->persist($order);
             $em->flush();

@@ -5,12 +5,14 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Table;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\OrdRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\OrderRepository")
+ * @Table(name="ord")
  */
-class Ord
+class Order
 {
     public const STATUS_SUCCESS = 'success';
     public const STATUS_WAITING = 'waiting';
@@ -101,7 +103,6 @@ class Ord
         if ($this->products->contains($product)) {
             $this->products->removeElement($product);
         }
-
         return $this;
     }
 

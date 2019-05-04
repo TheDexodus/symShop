@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\Ord;
+use App\Entity\Order;
 use App\Entity\Product;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -21,9 +21,9 @@ class OrderType extends AbstractType
         $builder
             ->add('status', ChoiceType::class, [
                 'choices' => [
-                    'Waiting' => Ord::STATUS_WAITING,
-                    'Canceled' => Ord::STATUS_CANCELED,
-                    'Success' => Ord::STATUS_SUCCESS,
+                    'Waiting' => Order::STATUS_WAITING,
+                    'Canceled' => Order::STATUS_CANCELED,
+                    'Success' => Order::STATUS_SUCCESS,
                 ]
             ])
             ->add('created_date', DateType::class)
@@ -45,7 +45,7 @@ class OrderType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Ord::class,
+            'data_class' => Order::class,
         ]);
     }
 }
