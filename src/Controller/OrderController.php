@@ -40,12 +40,6 @@ class OrderController extends AbstractController
              */
             $data = $form->getData();
 
-            $price = 0;
-
-            foreach ($data->getProducts() as $product) {
-                $price += $product->getPrice();
-            }
-
             $order->setStatus($data->getStatus())
                 ->setUserId($data->getUserId())
                 ->setCreatedDate($data->getCreatedDate())
