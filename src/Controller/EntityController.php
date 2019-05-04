@@ -6,15 +6,15 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ListController extends AbstractController
+class EntityController extends AbstractController
 {
     /**
-     * @Route("/admin/list", name="entityList")
+     * @Route("/admin/entity/list", name="entityList")
      * @Security("is_granted('ROLE_ADMIN')")
      */
     public function listAction()
     {
-        return $this->render('list/list.html.twig', [
+        return $this->render('entity/list.html.twig', [
             'controller_name' => 'ListController',
         ]);
     }
