@@ -27,7 +27,7 @@ class AdminType extends AbstractType
                 'required' => false,
                 'allow_add' => true,
             ])
-            ->add('save', SubmitType::class, ['label' => 'Save changes']);;
+            ->add('save', SubmitType::class, ['label' => 'Save changes']);
     }
 
     public function configureOptions(OptionsResolver $resolver)
