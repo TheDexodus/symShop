@@ -94,6 +94,7 @@ class Admin implements UserInterface
 
     public function setPassword(string $password): self
     {
+        $this->password = $password;
         return $this;
     }
 
