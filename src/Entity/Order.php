@@ -62,12 +62,12 @@ class Order
         return $this->id;
     }
 
-    public function getUserId(): ?user
+    public function getUserId(): ?User
     {
         return $this->user;
     }
 
-    public function setUserId(?user $user): self
+    public function setUserId(?User $user): self
     {
         $this->user = $user;
 
@@ -75,14 +75,14 @@ class Order
     }
 
     /**
-     * @return Collection|product[]
+     * @return Collection|Product[]
      */
     public function getProducts(): Collection
     {
         return $this->products;
     }
 
-    public function addProduct(product $product): self
+    public function addProduct(Product $product): self
     {
         if (!$this->products->contains($product)) {
             $this->products[] = $product;
@@ -98,7 +98,7 @@ class Order
         return $this;
     }
 
-    public function removeProduct(product $product): self
+    public function removeProduct(Product $product): self
     {
         if ($this->products->contains($product)) {
             $this->products->removeElement($product);
