@@ -35,6 +35,9 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /**
+             * @var User $data
+             */
             $data = $form->getData();
 
             $user->setFirstName($data->getFirstName());
@@ -75,6 +78,9 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /**
+             * @var User $data
+             */
             $data = $form->getData();
 
             $user = new User();

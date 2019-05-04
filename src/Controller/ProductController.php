@@ -35,6 +35,9 @@ class ProductController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /**
+             * @var Product $data
+             */
             $data = $form->getData();
 
             $product->setName($data->getName());
@@ -74,6 +77,9 @@ class ProductController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /**
+             * @var Product $data
+             */
             $data = $form->getData();
 
             $product = new Product();

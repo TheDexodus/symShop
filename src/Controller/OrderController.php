@@ -35,6 +35,9 @@ class OrderController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /**
+             * @var Ord $data
+             */
             $data = $form->getData();
 
             $price = 0;
@@ -83,6 +86,9 @@ class OrderController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /**
+             * @var Ord $data
+             */
             $data = $form->getData();
 
             $order = new Ord();
