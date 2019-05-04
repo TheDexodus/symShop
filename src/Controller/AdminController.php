@@ -38,7 +38,7 @@ class AdminController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             $findedAdmin = $em->getRepository(Admin::class)->findOneBy([
-                'email' => $data->getEmail()
+                'email' => $data->getEmail(),
             ]);
 
             if ($findedAdmin !== null && $findedAdmin->getId() !== $admin->getId()) {
