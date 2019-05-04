@@ -12,7 +12,7 @@ class AuthenticationController extends AbstractController
     /**
      * @Route("/login", name="login")
      */
-    public function loginAction(Request $request, AuthenticationUtils $authUtils)
+    public function loginAction(AuthenticationUtils $authUtils)
     {
         $error = $authUtils->getLastAuthenticationError();
 
