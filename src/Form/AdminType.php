@@ -38,9 +38,9 @@ class AdminType extends AbstractType
                 $admin->setPassword(password_hash($admin->getPlainPassword(), PASSWORD_BCRYPT));
             }
 
-            if (empty($data['roles'])) {
-                $data['roles'] = [];
-            }
+//            if (empty($data['roles'])) {
+//                $data['roles'] = [];
+//            }
 
             $roles = [];
             foreach ($admin->getRoles() as $role) {
