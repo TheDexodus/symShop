@@ -13,6 +13,9 @@
 
 <div class="example-wrapper">
     {{ form_start(form) }}
+
+    {{ form_errors(form) }}
+
     <ul id="role-fields-list"
         data-prototype="{{ form_widget(form.roles.vars.prototype)|e }}"
         data-widget-tags="{{ '<li></li>'|e }}"

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Admin;
 use App\Form\AdminType;
+use App\Repository\AdminRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,13 +16,9 @@ class AdminController extends AbstractController
      * @Route("/admin/admin/list", name="listAdmin")
      * @Security("is_granted('ROLE_ADMIN_VIEW')")
      */
-    public function getAdminsAction()
+    public function getAdminsAction(AdminRepository $adminRepository)
     {
-        $admins = $this->getDoctrine()->getManager()->getRepository(Admin::class)->findAll();
-
-        return $this->render('admin/list.html.twig', [
-            'admins' => $admins,
-        ]);
+        return $this->render('admin/list.html.twig', ['admins' => $adminRepository->findAll()]);
     }
 
     /**
@@ -30,45 +27,16 @@ class AdminController extends AbstractController
      */
     public function editAdminAction(Request $request, Admin $admin)
     {
-        $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(AdminType::class, $admin);
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /**
-             * @var Admin $data
-             */
-            $data = $form->getData();
-            $findedAdmin = $em->getRepository(Admin::class)->findOneBy([
-                'email' => $data->getEmail(),
-            ]);
-
-            if ($findedAdmin !== null && $findedAdmin->getId() !== $admin->getId()) {
-                throw new \Exception('Email is used');
-            }
-
-            $roles = [];
-            foreach ($data->getRoles() as $role) {
-                if (empty($role)) {
-                    continue;
-                }
-                $roles[] = $role;
-            }
-
-            $admin->setEmail($data->getEmail());
-            if (!empty($data->getPlainPassword())) {
-                $admin->setPassword(password_hash($data->getPlainPassword(), PASSWORD_BCRYPT));
-            }
-            $admin->setRoles($roles);
-
             $this->getDoctrine()->getManager()->flush();
+
             return $this->redirectToRoute('listAdmin');
         }
 
-        return $this->render('admin/edit.html.twig', [
-            'form' => $form->createView(),
-        ]);
+        return $this->render('admin/edit.html.twig', ['form' => $form->createView()]);
     }
 
     /**
@@ -92,45 +60,17 @@ class AdminController extends AbstractController
     {
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(AdminType::class);
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /**
-             * @var Admin $data
-             */
-            $data = $form->getData();
-            $admin = $em->getRepository(Admin::class)->findOneBy([
-                'email' => $data->getEmail()
-            ]);
-
-            if ($admin !== null) {
-                throw new \Exception('Email is used');
-            }
-            if ($data->getPlainPassword() === null) {
-                throw new \Exception('Password is empty');
-            }
-
-            $roles = [];
-            foreach ($data->getRoles() as $role) {
-                if (empty($role)) {
-                    continue;
-                }
-                $roles[] = $role;
-            }
-
-            $admin = new Admin();
-            $admin->setEmail($data->getEmail());
-            $admin->setPassword(password_hash($data->getPlainPassword(), PASSWORD_BCRYPT));
-            $admin->setRoles($roles);
-
+            /** @var Admin $admin */
+            $admin = $form->getData();
             $em->persist($admin);
             $em->flush();
+
             return $this->redirectToRoute('listAdmin');
         }
 
-        return $this->render('admin/edit.html.twig', [
-            'form' => $form->createView(),
-        ]);
+        return $this->render('admin/edit.html.twig', ['form' => $form->createView()]);
     }
 }
