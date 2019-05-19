@@ -12,6 +12,8 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class OrderType extends AbstractType
@@ -40,6 +42,16 @@ class OrderType extends AbstractType
                 'allow_add' => true,
             ])
             ->add('save', SubmitType::class, ['label' => 'Save changes']);
+        $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
+            /** @var Order $order */
+            $order = $event->getData();
+
+            $price = 0;
+            foreach ($order->getProducts() as $product) {
+                $price += $product->getPrice();
+            }
+            $order->setLaterPrice($price);
+        });
     }
 
     public function configureOptions(OptionsResolver $resolver)

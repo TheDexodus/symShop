@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Order;
 use App\Form\OrderType;
+use App\Repository\OrderRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,50 +15,42 @@ class OrderController extends AbstractController
     /**
      * @Route("/admin/order/list", name="listOrder")
      * @Security("is_granted('ROLE_ORDER_VIEW')")
+     * @param OrderRepository $orderRepository
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function getOrdersAction()
+    public function getOrdersAction(OrderRepository $orderRepository)
     {
-        $orders = $this->getDoctrine()->getManager()->getRepository(Order::class)->findAll();
+        $orders = $orderRepository->findAll();
 
-        return $this->render('order/list.html.twig', [
-            'orders' => $orders,
-        ]);
+        return $this->render('order/list.html.twig', ['orders' => $orders]);
     }
 
     /**
      * @Route("/admin/order/edit/{id}", name="editOrder")
      * @Security("is_granted('ROLE_ORDER_EDIT')")
+     * @param Request $request
+     * @param Order $order
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function editOrderAction(Request $request, Order $order)
     {
         $form = $this->createForm(OrderType::class, $order);
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /**
-             * @var Order $data
-             */
-            $data = $form->getData();
-
-            $order->setStatus($data->getStatus())
-                ->setUserId($data->getUserId())
-                ->setCreatedDate($data->getCreatedDate())
-                ->setProducts($data->getProducts())
-                ->setLaterPrice(0);
-
             $this->getDoctrine()->getManager()->flush();
+
             return $this->redirectToRoute('listOrder');
         }
 
-        return $this->render('order/edit.html.twig', [
-            'form' => $form->createView(),
-        ]);
+        return $this->render('order/edit.html.twig', ['form' => $form->createView()]);
     }
 
     /**
      * @Route("/admin/order/remove/{id}", name="removeOrder")
      * @Security("is_granted('ROLE_ORDER_EDIT')")
+     * @param Order $order
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function removeOrderAction(Order $order)
     {
@@ -71,6 +64,8 @@ class OrderController extends AbstractController
     /**
      * @Route("/admin/order/create", name="createOrder")
      * @Security("is_granted('ROLE_ORDER_EDIT')")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function createOrderAction(Request $request)
     {
@@ -80,26 +75,14 @@ class OrderController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /**
-             * @var Order $data
-             */
-            $data = $form->getData();
-
-            $order = new Order();
-
-            $order->setStatus($data->getStatus())
-                ->setUserId($data->getUserId())
-                ->setCreatedDate($data->getCreatedDate())
-                ->setProducts($data->getProducts())
-                ->setLaterPrice(0);
+            /** @var Order $order */
+            $order = $form->getData();
 
             $em->persist($order);
             $em->flush();
             return $this->redirectToRoute('listOrder');
         }
 
-        return $this->render('order/edit.html.twig', [
-            'form' => $form->createView(),
-        ]);
+        return $this->render('order/edit.html.twig', ['form' => $form->createView()]);
     }
 }
