@@ -46,11 +46,7 @@ class OrderType extends AbstractType
             /** @var Order $order */
             $order = $event->getData();
 
-            $price = 0;
-            foreach ($order->getProducts() as $product) {
-                $price += $product->getPrice();
-            }
-            $order->setLaterPrice($price);
+            $order->setLaterPrice($order->calculateLaterPrice());
         });
     }
 

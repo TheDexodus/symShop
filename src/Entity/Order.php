@@ -141,4 +141,13 @@ class Order
 
         return $this;
     }
+
+    public function calculateLaterPrice() {
+        $price = 0;
+        foreach ($this->getProducts() as $product) {
+            $price += $product->getPrice();
+        }
+
+        return $price;
+    }
 }
