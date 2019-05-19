@@ -132,13 +132,7 @@ class Order
 
     public function getLaterPrice(): ?float
     {
-        $price = 0;
-
-        foreach ($this->getProducts() as $product) {
-            $price += $product->getPrice();
-        }
-
-        return $price;
+        return $this->laterPrice;
     }
 
     public function setLaterPrice(float $laterPrice): self
