@@ -27,7 +27,8 @@
 
     <button type="button"
             class="add-another-collection-widget"
-            data-list-selector="#product-fields-list">Add another product</button>
+            data-list-selector="#product-fields-list"
+            {% if not isNew %}disabled{% endif %}>Add another product</button>
     {{ form_end(form) }}
     <a href="{{ path('listOrder') }}">Back</a>
     <script type="text/javascript" src="{{ asset('bundles/bmatznerjquery/js/jquery.min.js') }}"></script>

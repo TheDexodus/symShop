@@ -20,6 +20,7 @@ class OrderType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $data = $builder->getData();
         $builder
             ->add('status', ChoiceType::class, [
                 'choices' => [
@@ -32,6 +33,8 @@ class OrderType extends AbstractType
             ->add('user_id', EntityType::class, [
                 'class' => User::class,
                 'choice_label' => 'email',
+                'disabled' => !empty($data),
+
             ])
             ->add('products', CollectionType::class, [
                 'entry_type' => EntityType::class,
@@ -40,6 +43,7 @@ class OrderType extends AbstractType
                     'choice_label' => 'name',
                 ],
                 'allow_add' => true,
+                'disabled' => !empty($data),
             ])
             ->add('save', SubmitType::class, ['label' => 'Save changes']);
         $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {

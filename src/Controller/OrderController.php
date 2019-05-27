@@ -43,7 +43,7 @@ class OrderController extends AbstractController
             return $this->redirectToRoute('listOrder');
         }
 
-        return $this->render('order/edit.html.twig', ['form' => $form->createView()]);
+        return $this->render('order/edit.html.twig', ['form' => $form->createView(), 'isNew' => false]);
     }
 
     /**
@@ -83,6 +83,6 @@ class OrderController extends AbstractController
             return $this->redirectToRoute('listOrder');
         }
 
-        return $this->render('order/edit.html.twig', ['form' => $form->createView()]);
+        return $this->render('order/edit.html.twig', ['form' => $form->createView(), 'isNew' => true]);
     }
 }
