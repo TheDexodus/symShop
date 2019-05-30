@@ -50,7 +50,9 @@ class OrderType extends AbstractType
             /** @var Order $order */
             $order = $event->getData();
 
-            $order->setLaterPrice($order->calculateLaterPrice());
+            if (empty($order->getId())) {
+                $order->setLaterPrice($order->calculateLaterPrice());
+            }
         });
     }
 

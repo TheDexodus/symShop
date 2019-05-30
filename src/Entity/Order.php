@@ -143,9 +143,9 @@ class Order
     }
 
     /**
-     * @return float|int|null
+     * @return int|null
      */
-    public function calculateLaterPrice(): ?float
+    public function calculateLaterPrice(): ?int
     {
         $price = 0;
         foreach ($this->getProducts() as $product) {

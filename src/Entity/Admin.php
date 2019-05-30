@@ -32,10 +32,8 @@ class Admin implements UserInterface
 
     /**
      * @var string The hashed password
-     *
      * @Assert\NotBlank()
-     *
-     * @ORM\Column(type="string", length=32)
+     * @ORM\Column(type="string", length=60)
      */
     private $password;
 
