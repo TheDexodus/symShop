@@ -11,7 +11,7 @@ services:
     volumes:
       - .docker/mysql:/var/lib/mysql
     ports:
-      - "3306:3306"
+      - "3666:3306"
 
   nginx:
     image: nginx:1.15.11

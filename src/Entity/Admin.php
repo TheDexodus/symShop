@@ -3,11 +3,13 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AdminRepository")
+ * @UniqueEntity(fields={"email"}, message="Email is used.")
  */
 class Admin implements UserInterface
 {
@@ -30,7 +32,8 @@ class Admin implements UserInterface
 
     /**
      * @var string The hashed password
-     * @ORM\Column(type="string", length=32)
+     * @Assert\NotBlank()
+     * @ORM\Column(type="string", length=60)
      */
     private $password;
 
@@ -63,7 +66,7 @@ class Admin implements UserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->email;
+        return (string)$this->email;
     }
 
     /**
@@ -90,15 +93,12 @@ class Admin implements UserInterface
      */
     public function getPassword(): string
     {
-        return (string) $this->password;
+        return (string)$this->password;
     }
 
     public function setPassword(string $password): self
     {
-        if ($password !== null) {
-            $this->password = $password;
-        }
-
+        $this->password = $password;
         return $this;
     }
 

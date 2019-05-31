@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Repository\UserRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,14 +15,14 @@ class UserController extends AbstractController
     /**
      * @Route("/admin/user/list", name="listUser")
      * @Security("is_granted('ROLE_USER_VIEW')")
+     * @param UserRepository $userRepository
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function getUsersAction()
+    public function getUsersAction(UserRepository $userRepository)
     {
-        $users = $this->getDoctrine()->getManager()->getRepository(User::class)->findAll();
+        $users = $userRepository->findAll();
 
-        return $this->render('user/list.html.twig', [
-            'users' => $users,
-        ]);
+        return $this->render('user/list.html.twig', ['users' => $users]);
     }
 
     /**
@@ -31,28 +32,22 @@ class UserController extends AbstractController
     public function editUserAction(Request $request, User $user)
     {
         $form = $this->createForm(UserType::class, $user);
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-
-            $user->setFirstName($data->getFirstName());
-            $user->setSecondName($data->getSecondName());
-            $user->setEmail($data->getEmail());
-
             $this->getDoctrine()->getManager()->flush();
+
             return $this->redirectToRoute('listUser');
         }
 
-        return $this->render('user/edit.html.twig', [
-            'form' => $form->createView(),
-        ]);
+        return $this->render('user/edit.html.twig', ['form' => $form->createView()]);
     }
 
     /**
      * @Route("/admin/user/remove/{id}", name="removeUser")
      * @Security("is_granted('ROLE_USER_EDIT')")
+     * @param User $user
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function removeUserAction(User $user)
     {
@@ -75,21 +70,14 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-
-            $user = new User();
-            $user->setFirstName($data->getFirstName());
-            $user->setSecondName($data->getSecondName());
-            $user->setEmail($data->getEmail());
-
+            /** @var User $user */
+            $user = $form->getData();
             $em->persist($user);
             $em->flush();
+
             return $this->redirectToRoute('listUser');
         }
 
-        return $this->render('user/edit.html.twig', [
-                'form' => $form->createView(),
-            ]
-        );
+        return $this->render('user/edit.html.twig', ['form' => $form->createView()]);
     }
 }
