@@ -92,7 +92,7 @@ class OrderController extends AbstractController
      */
     public function statisticsAction() {
         $em = $this->getDoctrine()->getManager();
-        $orders = $em->getRepository(Ord::class)->findAll();
+        $orders = $em->getRepository(Order::class)->findAll();
 
         $statistics = [];
         $usersStats = [];
@@ -101,12 +101,12 @@ class OrderController extends AbstractController
             if (!isset($statistics[$date])) {
                 $statistics[$date]['created'] = 0;
                 $statistics[$date]['allPrice'] = 0;
-                $statistics[$date][Ord::STATUS_SUCCESS . 'Price'] = 0;
-                $statistics[$date][Ord::STATUS_WAITING . 'Price'] = 0;
-                $statistics[$date][Ord::STATUS_CANCELED . 'Price'] = 0;
-                $statistics[$date][Ord::STATUS_SUCCESS . 'Created'] = 0;
-                $statistics[$date][Ord::STATUS_WAITING . 'Created'] = 0;
-                $statistics[$date][Ord::STATUS_CANCELED . 'Created'] = 0;
+                $statistics[$date][Order::STATUS_SUCCESS . 'Price'] = 0;
+                $statistics[$date][Order::STATUS_WAITING . 'Price'] = 0;
+                $statistics[$date][Order::STATUS_CANCELED . 'Price'] = 0;
+                $statistics[$date][Order::STATUS_SUCCESS . 'Created'] = 0;
+                $statistics[$date][Order::STATUS_WAITING . 'Created'] = 0;
+                $statistics[$date][Order::STATUS_CANCELED . 'Created'] = 0;
             }
             $statistics[$date]['date'] = $date;
             $statistics[$date]['created'] += 1;
