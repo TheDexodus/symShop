@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Order;
 use App\Form\OrderType;
 use App\Repository\OrderRepository;
+use App\Service\OrderStatistics;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -90,36 +91,11 @@ class OrderController extends AbstractController
      * @Route("admin/order/statistics", name="statisticsOrder")
      * @Security("is_granted('ROLE_ORDER_VIEW')")
      */
-    public function statisticsAction() {
+    public function statisticsAction(OrderStatistics $orderStatistics) {
         $em = $this->getDoctrine()->getManager();
         $orders = $em->getRepository(Order::class)->findAll();
 
-        $statistics = [];
-        $usersStats = [];
-        foreach ($orders as $order) {
-            $date = $order->getCreatedDate()->format('y-m-d');
-            if (!isset($statistics[$date])) {
-                $statistics[$date]['created'] = 0;
-                $statistics[$date]['allPrice'] = 0;
-                $statistics[$date][Order::STATUS_SUCCESS . 'Price'] = 0;
-                $statistics[$date][Order::STATUS_WAITING . 'Price'] = 0;
-                $statistics[$date][Order::STATUS_CANCELED . 'Price'] = 0;
-                $statistics[$date][Order::STATUS_SUCCESS . 'Created'] = 0;
-                $statistics[$date][Order::STATUS_WAITING . 'Created'] = 0;
-                $statistics[$date][Order::STATUS_CANCELED . 'Created'] = 0;
-            }
-            $statistics[$date]['date'] = $date;
-            $statistics[$date]['created'] += 1;
-            $statistics[$date]['allPrice'] += $order->getLaterPrice();
-            $statistics[$date][$order->getStatus() . 'Price'] += $order->getLaterPrice();
-            $statistics[$date][$order->getStatus() . 'Created'] += 1;
-            $usersStats[$date][$order->getUserId()->getId()] = true;
-        }
-        foreach ($usersStats as $key => $value) {
-            $statistics[$key]['usersCreated'] = count($value);
-        }
-
-        krsort($statistics);
+        $statistics = $orderStatistics->getStatisticsByOrders($orders);
 
         return $this->render('order/statistics.html.twig', [
                 'statistics' => $statistics,
