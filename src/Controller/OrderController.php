@@ -92,10 +92,7 @@ class OrderController extends AbstractController
      * @Security("is_granted('ROLE_ORDER_VIEW')")
      */
     public function statisticsAction(OrderStatistics $orderStatistics) {
-        $em = $this->getDoctrine()->getManager();
-        $orders = $em->getRepository(Order::class)->findAll();
-
-        $statistics = $orderStatistics->getStatisticsByOrders($orders);
+        $statistics = $orderStatistics->getStatisticsByOrders();
 
         return $this->render('order/statistics.html.twig', [
                 'statistics' => $statistics,

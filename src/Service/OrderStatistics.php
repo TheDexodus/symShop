@@ -3,10 +3,29 @@
 namespace App\Service;
 
 use App\Entity\Order;
+use App\Repository\OrderRepository;
 
 class OrderStatistics
 {
-    public function getStatisticsByOrders($orders) {
+    /**
+     * @var OrderRepository $orderRepository
+     */
+    private $orderRepository;
+
+    /**
+     * OrderStatistics constructor.
+     * @param OrderRepository $orderRepository
+     */
+    public function __construct(OrderRepository $orderRepository)
+    {
+        $this->orderRepository = $orderRepository;
+    }
+
+    /**
+     * @return array
+     */
+    public function getStatisticsByOrders() {
+        $orders = $this->orderRepository->findAll();
         $statistics = [];
         $usersStats = [];
         /** @var Order $order */
