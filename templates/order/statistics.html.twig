@@ -18,42 +18,36 @@
     <table>
         <tr>
             <th>Date</th>
-            <th>Action</th>
             <th>Count</th>
-            <th>Price</th>
             <th>Users</th>
+            <th>Price</th>
         </tr>
         {%   for day in statistics %}
             <tr>
                 <td>{{ day.date }}</td>
-                <td>All</td>
                 <td>{{ day.created }}</td>
-                <td>{{ day.allPrice }}</td>
                 <td>{{ day.usersCreated }}</td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>Success</td>
-                <td>{{ day.successCreated }}</td>
-                <td>{{ day.successPrice }}</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>Waiting</td>
-                <td>{{ day.waitingCreated }}</td>
-                <td>{{ day.waitingPrice }}</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>Canceled</td>
-                <td>{{ day.canceledCreated }}</td>
-                <td>{{ day.canceledPrice }}</td>
-                <td></td>
+                <td>{{ day.allPrice }}</td>
             </tr>
         {% endfor %}
-
+        <tr>
+            <th>Success orders</th>
+            <td>{{ success.created }}</td>
+            <th>Price</th>
+            <td>{{ success.price }}</td>
+        </tr>
+        <tr>
+            <th>Cancelled orders</th>
+            <td>{{ canceled.created }}</td>
+            <th>Price</th>
+            <td>{{ canceled.price }}</td>
+        </tr>
+        <tr>
+            <th>Waiting orders</th>
+            <td>{{ waiting.created }}</td>
+            <th>Price</th>
+            <td>{{ waiting.price }}</td>
+        </tr>
     </table>
 </div>
 {% endblock %}
