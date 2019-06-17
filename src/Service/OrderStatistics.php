@@ -26,7 +26,7 @@ class OrderStatistics
      */
     public function getStatisticsByOrders()
     {
-        $orders = $this->orderRepository->findAll();
+        $orders = $this->orderRepository->findAllBySortDateDesc();
         $statistics = [];
         $usersStats = [];
         $statistics[Order::STATUS_SUCCESS]['price'] = 0;
@@ -51,8 +51,6 @@ class OrderStatistics
         foreach ($usersStats as $key => $value) {
             $statistics[$key]['usersCreated'] = count($value);
         }
-
-        krsort($statistics);
 
         return $statistics;
     }
