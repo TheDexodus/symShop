@@ -19,12 +19,7 @@ class OrderCollection implements OrderCollectionInterface
      */
     public function add(Order $order): void
     {
-        foreach ($this->orders as $order) {
-            if ($order->getId() == $order->getId()) {
-                return;
-            }
-        }
-        $orders[] = $order;
+        $this->orders[] = $order;
     }
 
     /**

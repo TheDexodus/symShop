@@ -94,19 +94,6 @@ class OrderController extends AbstractController
     public function statisticsAction(OrderStatistics $orderStatistics) {
         $statistics = $orderStatistics->getStatisticsByOrders();
 
-        $success = $statistics[Order::STATUS_SUCCESS];
-        $waiting = $statistics[Order::STATUS_WAITING];
-        $canceled = $statistics[Order::STATUS_CANCELED];
-        unset($statistics[Order::STATUS_SUCCESS]);
-        unset($statistics[Order::STATUS_WAITING]);
-        unset($statistics[Order::STATUS_CANCELED]);
-
-        return $this->render('order/statistics.html.twig', [
-                'success' => $success,
-                'waiting' => $waiting,
-                'canceled' => $canceled,
-                'statistics' => $statistics,
-            ]
-        );
+        return $this->render('order/statistics.html.twig', ['statistics' => $statistics]);
     }
 }

@@ -2,10 +2,12 @@
 
 namespace App\Service;
 
-use App\Entity\Order;
+use App\Model\OrderCollection;
+use App\Model\StatisticOrderModel;
+use App\Model\StatisticOrderModelInterface;
 use App\Repository\OrderRepository;
 
-class OrderStatistics
+class OrderStatistics implements OrderStatisticInterface
 {
     /**
      * @var OrderRepository $orderRepository
@@ -22,35 +24,28 @@ class OrderStatistics
     }
 
     /**
-     * @return array
+     * @return StatisticOrderModelInterface
      */
-    public function getStatisticsByOrders()
+    public function getStatisticsByOrders(): StatisticOrderModelInterface
     {
         $orders = $this->orderRepository->findAllBySortDateDesc();
-        $statistics = [];
-        $usersStats = [];
-        $statistics[Order::STATUS_SUCCESS]['price'] = 0;
-        $statistics[Order::STATUS_WAITING]['price'] = 0;
-        $statistics[Order::STATUS_CANCELED]['price'] = 0;
-        $statistics[Order::STATUS_SUCCESS]['created'] = 0;
-        $statistics[Order::STATUS_WAITING]['created'] = 0;
-        $statistics[Order::STATUS_CANCELED]['created'] = 0;
+        $ordersByDate = [];
+        $ordersByStatus = [];
         foreach ($orders as $order) {
             $date = $order->getCreatedDate()->format('y-m-d');
-            if (!isset($statistics[$date])) {
-                $statistics[$date]['created'] = 0;
-                $statistics[$date]['allPrice'] = 0;
+            if (!isset($ordersByDate[$date])) {
+                $ordersByDate[$date] = new OrderCollection();
             }
-            $statistics[$date]['date'] = $date;
-            $statistics[$date]['created'] += 1;
-            $statistics[$date]['allPrice'] += $order->getLaterPrice();
-            $statistics[$order->getStatus()]['price'] += $order->getLaterPrice();
-            $statistics[$order->getStatus()]['created'] += 1;
-            $usersStats[$date][$order->getUser()->getId()] = true;
+            $ordersByDate[$date]->add($order);
+
+            $status = $order->getStatus();
+            if (!isset($ordersByStatus[$status])) {
+                $ordersByStatus[$status] = new OrderCollection();
+            }
+            $ordersByStatus[$status]->add($order);
         }
-        foreach ($usersStats as $key => $value) {
-            $statistics[$key]['usersCreated'] = count($value);
-        }
+
+        $statistics = new StatisticOrderModel($ordersByDate, $ordersByStatus);
 
         return $statistics;
     }

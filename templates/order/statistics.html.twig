@@ -22,32 +22,23 @@
             <th>Users</th>
             <th>Price</th>
         </tr>
-        {%   for day in statistics %}
+        {% for date, orders in statistics.getOrdersByDate() %}
             <tr>
-                <td>{{ day.date }}</td>
-                <td>{{ day.created }}</td>
-                <td>{{ day.usersCreated }}</td>
-                <td>{{ day.allPrice }}</td>
+                <td>{{ date }}</td>
+                <td>{{ orders.getCountOrders() }}</td>
+                <td>{{ orders.getCountUsers() }}</td>
+                <td>{{ orders.getPrice() }}</td>
             </tr>
         {% endfor %}
-        <tr>
-            <th>Success orders</th>
-            <td>{{ success.created }}</td>
-            <th>Price</th>
-            <td>{{ success.price }}</td>
-        </tr>
-        <tr>
-            <th>Cancelled orders</th>
-            <td>{{ canceled.created }}</td>
-            <th>Price</th>
-            <td>{{ canceled.price }}</td>
-        </tr>
-        <tr>
-            <th>Waiting orders</th>
-            <td>{{ waiting.created }}</td>
-            <th>Price</th>
-            <td>{{ waiting.price }}</td>
-        </tr>
+
+        {% for status, orders in statistics.getOrdersByStatus() %}
+            <tr>
+                <th>{{ status|capitalize }} orders</th>
+                <td>{{ orders.getCountOrders() }}</td>
+                <th>Price</th>
+                <td>{{ orders.getPrice() }}</td>
+            </tr>
+        {% endfor %}
     </table>
 </div>
 {% endblock %}
