@@ -46,7 +46,7 @@ class OrderStatistics
             $statistics[$date]['allPrice'] += $order->getLaterPrice();
             $statistics[$order->getStatus()]['price'] += $order->getLaterPrice();
             $statistics[$order->getStatus()]['created'] += 1;
-            $usersStats[$date][$order->getUserId()->getId()] = true;
+            $usersStats[$date][$order->getUser()->getId()] = true;
         }
         foreach ($usersStats as $key => $value) {
             $statistics[$key]['usersCreated'] = count($value);
