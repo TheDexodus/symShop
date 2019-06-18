@@ -7,7 +7,9 @@ use App\Form\ProductType;
 use App\Repository\ProductRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ProductController extends AbstractController
@@ -16,9 +18,9 @@ class ProductController extends AbstractController
      * @Route("/admin/product/list", name="listProduct")
      * @Security("is_granted('ROLE_PRODUCT_VIEW')")
      * @param ProductRepository $productRepository
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function getProductsAction(ProductRepository $productRepository)
+    public function getProductsAction(ProductRepository $productRepository): Response
     {
         $products = $productRepository->findAll();
 
@@ -30,9 +32,9 @@ class ProductController extends AbstractController
      * @Security("is_granted('ROLE_PRODUCT_EDIT')")
      * @param Request $request
      * @param Product $product
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function editProductAction(Request $request, Product $product)
+    public function editProductAction(Request $request, Product $product): Response
     {
         $form = $this->createForm(ProductType::class, $product);
 
@@ -51,9 +53,9 @@ class ProductController extends AbstractController
      * @Route("/admin/product/remove/{id}", name="removeProduct")
      * @Security("is_granted('ROLE_PRODUCT_EDIT')")
      * @param Product $product
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
-    public function removeProductAction(Product $product)
+    public function removeProductAction(Product $product): RedirectResponse
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($product);
@@ -66,9 +68,9 @@ class ProductController extends AbstractController
      * @Route("/admin/product/create", name="createProduct")
      * @Security("is_granted('ROLE_PRODUCT_EDIT')")
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function createProductAction(Request $request)
+    public function createProductAction(Request $request): Response
     {
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(ProductType::class);

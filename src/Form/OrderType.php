@@ -30,7 +30,7 @@ class OrderType extends AbstractType
                 ]
             ])
             ->add('created_date', DateType::class)
-            ->add('user_id', EntityType::class, [
+            ->add('user', EntityType::class, [
                 'class' => User::class,
                 'choice_label' => 'email',
                 'disabled' => !empty($data),

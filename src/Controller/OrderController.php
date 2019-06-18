@@ -8,7 +8,9 @@ use App\Repository\OrderRepository;
 use App\Service\OrderStatistics;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class OrderController extends AbstractController
@@ -17,13 +19,11 @@ class OrderController extends AbstractController
      * @Route("/admin/order/list", name="listOrder")
      * @Security("is_granted('ROLE_ORDER_VIEW')")
      * @param OrderRepository $orderRepository
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function getOrdersAction(OrderRepository $orderRepository)
+    public function getOrdersAction(OrderRepository $orderRepository): Response
     {
-        $orders = $orderRepository->findAll();
-
-        return $this->render('order/list.html.twig', ['orders' => $orders]);
+        return $this->render('order/list.html.twig', ['orders' => $orderRepository->findAll()]);
     }
 
     /**
@@ -31,9 +31,9 @@ class OrderController extends AbstractController
      * @Security("is_granted('ROLE_ORDER_EDIT')")
      * @param Request $request
      * @param Order $order
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function editOrderAction(Request $request, Order $order)
+    public function editOrderAction(Request $request, Order $order): Response
     {
         $form = $this->createForm(OrderType::class, $order);
         $form->handleRequest($request);
@@ -51,9 +51,9 @@ class OrderController extends AbstractController
      * @Route("/admin/order/remove/{id}", name="removeOrder")
      * @Security("is_granted('ROLE_ORDER_EDIT')")
      * @param Order $order
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
-    public function removeOrderAction(Order $order)
+    public function removeOrderAction(Order $order): RedirectResponse
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($order);
@@ -66,9 +66,9 @@ class OrderController extends AbstractController
      * @Route("/admin/order/create", name="createOrder")
      * @Security("is_granted('ROLE_ORDER_EDIT')")
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function createOrderAction(Request $request)
+    public function createOrderAction(Request $request): Response
     {
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(OrderType::class);
@@ -90,10 +90,11 @@ class OrderController extends AbstractController
     /**
      * @Route("admin/order/statistics", name="statisticsOrder")
      * @Security("is_granted('ROLE_ORDER_VIEW')")
+     * @param OrderStatistics $orderStatistics
+     * @return Response
      */
-    public function statisticsAction(OrderStatistics $orderStatistics) {
-        $statistics = $orderStatistics->getStatisticsByOrders();
-
-        return $this->render('order/statistics.html.twig', ['statistics' => $statistics]);
+    public function statisticsAction(OrderStatistics $orderStatistics): Response
+    {
+        return $this->render('order/statistics.html.twig', ['statistics' => $orderStatistics->getStatisticsByOrders()]);
     }
 }

@@ -23,11 +23,11 @@
         </tr>
         {%   for product in products %}
             <tr>
-                <td>{{ product.getName() }}</td>
-                <td>{{ product.getPrice() }}</td>
+                <td>{{ product.Name }}</td>
+                <td>{{ product.Price }}</td>
                 <td>
-                    <a href="{{ path('editProduct', {'id': product.getId()}) }}">Edit</a>
-                    <a href="{{ path('removeProduct', {'id': product.getId()}) }}">Remove</a>
+                    <a href="{{ path('editProduct', { 'id': product.Id }) }}">Edit</a>
+                    <a href="{{ path('removeProduct', { 'id': product.Id }) }}">Remove</a>
                 </td>
             </tr>
         {% endfor %}

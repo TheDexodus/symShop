@@ -24,12 +24,12 @@
         </tr>
         {%   for user in users %}
             <tr>
-                <td>{{ user.getFirstName() }}</td>
-                <td>{{ user.getSecondName() }}</td>
-                <td>{{ user.getEmail() }}</td>
+                <td>{{ user.FirstName }}</td>
+                <td>{{ user.SecondName }}</td>
+                <td>{{ user.Email }}</td>
                 <td>
-                    <a href="{{ path('editUser', {'id': user.getId()}) }}">Edit</a>
-                    <a href="{{ path('removeUser', {'id': user.getId()}) }}">Remove</a>
+                    <a href="{{ path('editUser', {'id': user.Id}) }}">Edit</a>
+                    <a href="{{ path('removeUser', {'id': user.Id}) }}">Remove</a>
                 </td>
             </tr>
         {% endfor %}

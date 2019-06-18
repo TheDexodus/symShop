@@ -25,13 +25,13 @@
         </tr>
         {%   for order in orders %}
             <tr>
-                <td>{{ order.getStatus() }}</td>
-                <td>{{ order.getUserId().getId() }}</td>
-                <td>{{ order.getCreatedDate().date }}</td>
-                <td>{{ order.getLaterPrice() }}</td>
+                <td>{{ order.Status }}</td>
+                <td>{{ order.User.Id }}</td>
+                <td>{{ order.CreatedDate.date }}</td>
+                <td>{{ order.LaterPrice }}</td>
                 <td>
-                    <a href="{{ path('editOrder', {'id': order.getId()}) }}">Edit</a>
-                    <a href="{{ path('removeOrder', {'id': order.getId()}) }}">Remove</a>
+                    <a href="{{ path('editOrder', { 'id': order.Id }) }}">Edit</a>
+                    <a href="{{ path('removeOrder', { 'id': order.Id }) }}">Remove</a>
                 </td>
             </tr>
         {% endfor %}

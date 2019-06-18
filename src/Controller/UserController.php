@@ -7,7 +7,9 @@ use App\Form\UserType;
 use App\Repository\UserRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class UserController extends AbstractController
@@ -16,9 +18,9 @@ class UserController extends AbstractController
      * @Route("/admin/user/list", name="listUser")
      * @Security("is_granted('ROLE_USER_VIEW')")
      * @param UserRepository $userRepository
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function getUsersAction(UserRepository $userRepository)
+    public function getUsersAction(UserRepository $userRepository): Response
     {
         $users = $userRepository->findAll();
 
@@ -28,8 +30,11 @@ class UserController extends AbstractController
     /**
      * @Route("/admin/user/edit/{id}", name="editUser")
      * @Security("is_granted('ROLE_USER_EDIT')")
+     * @param Request $request
+     * @param User $user
+     * @return Response
      */
-    public function editUserAction(Request $request, User $user)
+    public function editUserAction(Request $request, User $user): Response
     {
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
@@ -47,9 +52,9 @@ class UserController extends AbstractController
      * @Route("/admin/user/remove/{id}", name="removeUser")
      * @Security("is_granted('ROLE_USER_EDIT')")
      * @param User $user
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
-    public function removeUserAction(User $user)
+    public function removeUserAction(User $user): RedirectResponse
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($user);
@@ -61,8 +66,10 @@ class UserController extends AbstractController
     /**
      * @Route("/admin/user/create", name="createUser")
      * @Security("is_granted('ROLE_USER_EDIT')")
+     * @param Request $request
+     * @return Response
      */
-    public function createUserAction(Request $request)
+    public function createUserAction(Request $request): Response
     {
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(UserType::class);

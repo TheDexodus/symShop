@@ -45,8 +45,6 @@ class OrderStatistics implements OrderStatisticInterface
             $ordersByStatus[$status]->add($order);
         }
 
-        $statistics = new StatisticOrderModel($ordersByDate, $ordersByStatus);
-
-        return $statistics;
+        return new StatisticOrderModel($ordersByDate, $ordersByStatus);
     }
 }

@@ -7,7 +7,9 @@ use App\Form\AdminType;
 use App\Repository\AdminRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AdminController extends AbstractController
@@ -24,8 +26,11 @@ class AdminController extends AbstractController
     /**
      * @Route("/admin/admin/edit/{id}", name="editAdmin")
      * @Security("is_granted('ROLE_ADMIN_EDIT')")
+     * @param Request $request
+     * @param Admin $admin
+     * @return Response
      */
-    public function editAdminAction(Request $request, Admin $admin)
+    public function editAdminAction(Request $request, Admin $admin): Response
     {
         $form = $this->createForm(AdminType::class, $admin);
         $form->handleRequest($request);
@@ -42,8 +47,10 @@ class AdminController extends AbstractController
     /**
      * @Route("/admin/admin/remove/{id}", name="removeAdmin")
      * @Security("is_granted('ROLE_ADMIN_EDIT')")
+     * @param Admin $admin
+     * @return RedirectResponse
      */
-    public function removeAdminAction(Admin $admin)
+    public function removeAdminAction(Admin $admin): RedirectResponse
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($admin);
@@ -55,8 +62,10 @@ class AdminController extends AbstractController
     /**
      * @Route("/admin/admin/create", name="createAdmin")
      * @Security("is_granted('ROLE_ADMIN_EDIT')")
+     * @param Request $request
+     * @return Response
      */
-    public function createAdminAction(Request $request)
+    public function createAdminAction(Request $request): Response
     {
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(AdminType::class);
