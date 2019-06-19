@@ -22,21 +22,21 @@
             <th>Users</th>
             <th>Price</th>
         </tr>
-        {% for date, orders in statistics.getOrdersByDate() %}
+        {% for date, orders in statistics.ordersByDate %}
             <tr>
                 <td>{{ date }}</td>
-                <td>{{ orders.getCountOrders() }}</td>
-                <td>{{ orders.getCountUsers() }}</td>
-                <td>{{ orders.getPrice() }}</td>
+                <td>{{ orders.countOrders }}</td>
+                <td>{{ orders.countUsers }}</td>
+                <td>{{ orders.price }}</td>
             </tr>
         {% endfor %}
 
-        {% for status, orders in statistics.getOrdersByStatus() %}
+        {% for status, orders in statistics.ordersByStatus %}
             <tr>
                 <th>{{ status|capitalize }} orders</th>
-                <td>{{ orders.getCountOrders() }}</td>
+                <td>{{ orders.countOrders }}</td>
                 <th>Price</th>
-                <td>{{ orders.getPrice() }}</td>
+                <td>{{ orders.price }}</td>
             </tr>
         {% endfor %}
     </table>

@@ -22,10 +22,10 @@
         </tr>
         {% for admin in admins %}
             <tr>
-                <td>{{ admin.Email }}</td>
+                <td>{{ admin.email }}</td>
                 <td>
-                    <a href="{{ path('editAdmin', {'id': admin.Id}) }}">Edit</a>
-                    <a href="{{ path('removeAdmin', {'id': admin.Id}) }}">Remove</a>
+                    <a href="{{ path('editAdmin', {'id': admin.id}) }}">Edit</a>
+                    <a href="{{ path('removeAdmin', {'id': admin.id}) }}">Remove</a>
                 </td>
             </tr>
         {% endfor %}

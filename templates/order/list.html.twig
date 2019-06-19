@@ -25,13 +25,13 @@
         </tr>
         {%   for order in orders %}
             <tr>
-                <td>{{ order.Status }}</td>
-                <td>{{ order.User.Id }}</td>
-                <td>{{ order.CreatedDate.date }}</td>
-                <td>{{ order.LaterPrice }}</td>
+                <td>{{ order.status }}</td>
+                <td>{{ order.user.id }}</td>
+                <td>{{ order.createdDate.date }}</td>
+                <td>{{ order.laterPrice }}</td>
                 <td>
-                    <a href="{{ path('editOrder', { 'id': order.Id }) }}">Edit</a>
-                    <a href="{{ path('removeOrder', { 'id': order.Id }) }}">Remove</a>
+                    <a href="{{ path('editOrder', { 'id': order.id }) }}">Edit</a>
+                    <a href="{{ path('removeOrder', { 'id': order.id }) }}">Remove</a>
                 </td>
             </tr>
         {% endfor %}
