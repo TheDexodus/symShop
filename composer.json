@@ -6,6 +6,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "bmatzner/jquery-bundle": "^2.2",
+        "friendsofsymfony/user-bundle": "~2.0",
         "sensio/framework-extra-bundle": "^5.1",
         "symfony/asset": "4.2.*",
         "symfony/console": "4.2.*",
@@ -25,7 +26,8 @@
         "symfony/twig-bundle": "4.2.*",
         "symfony/validator": "4.2.*",
         "symfony/web-link": "4.2.*",
-        "symfony/yaml": "4.2.*"
+        "symfony/yaml": "4.2.*",
+        "twbs/bootstrap": "4.3.1"
     },
     "require-dev": {
         "symfony/debug-pack": "*",
