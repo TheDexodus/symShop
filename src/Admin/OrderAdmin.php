@@ -1,27 +1,27 @@
 <?php
 
-namespace App\Form;
+namespace App\Admin;
 
 use App\Entity\Order;
 use App\Entity\Product;
 use App\Entity\User;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class OrderType extends AbstractType
+final class OrderAdmin extends AbstractAdmin
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    protected function configureFormFields(FormMapper $formMapper)
     {
-        $data = $builder->getData();
-        $builder
+        /** @var Order $order */
+        $order = $this->getSubject();
+        $formMapper
             ->add('status', ChoiceType::class, [
                 'choices' => [
                     'Waiting' => Order::STATUS_WAITING,
@@ -33,7 +33,7 @@ class OrderType extends AbstractType
             ->add('user', EntityType::class, [
                 'class' => User::class,
                 'choice_label' => 'email',
-                'disabled' => !empty($data),
+                'disabled' => !empty($order->getId()),
 
             ])
             ->add('products', CollectionType::class, [
@@ -43,10 +43,9 @@ class OrderType extends AbstractType
                     'choice_label' => 'name',
                 ],
                 'allow_add' => true,
-                'disabled' => !empty($data),
-            ])
-            ->add('save', SubmitType::class, ['label' => 'Save changes']);
-        $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
+                'disabled' => !empty($order->getId()),
+            ]);
+        $formMapper->getFormBuilder()->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
             /** @var Order $order */
             $order = $event->getData();
 
@@ -56,10 +55,23 @@ class OrderType extends AbstractType
         });
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    protected function configureListFields(ListMapper $listMapper)
     {
-        $resolver->setDefaults([
-            'data_class' => Order::class,
-        ]);
+        $listMapper
+            ->add('status')
+            ->add('created_date', 'datetime')
+            ->add('user.email')
+            ->add('laterPrice')
+            ->add('_action', 'actions', [
+                'actions' => [
+                    'edit' => [],
+                    'delete' => [],
+                ]
+            ]);
+    }
+
+    public function toString($object)
+    {
+        return 'Order';
     }
 }
