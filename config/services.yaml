@@ -35,25 +35,25 @@ services:
         class: App\Admin\UserAdmin
         arguments: [~, App\Entity\User, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, label: 'User' }
+            - { name: sonata.admin, manager_type: orm, group: Entities, label: 'User' }
 
     admin.order:
         class: App\Admin\OrderAdmin
         arguments: [~, App\Entity\Order, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, label: 'Order' }
+            - { name: sonata.admin, manager_type: orm, group: Entities, label: 'Order' }
 
     admin.product:
       class: App\Admin\ProductAdmin
       arguments: [~, App\Entity\Product, ~]
       tags:
-        - { name: sonata.admin, manager_type: orm, label: 'Product' }
+        - { name: sonata.admin, manager_type: orm, group: Entities, label: 'Product' }
 
     admin.superuser:
       class: App\Admin\SuperUserAdmin
       arguments: [~, App\Entity\Admin, ~]
       tags:
-        - { name: sonata.admin, manager_type: orm, label: 'Admin' }
+        - { name: sonata.admin, manager_type: orm, group: Entities, label: 'Admin' }
 
     app.admin.order_statistics:
       class: App\Admin\OrderStatisticsAdmin
@@ -62,4 +62,4 @@ services:
         - ~
         - App\Controller\OrderStatisticsCRUDController
       tags:
-        - { name: sonata.admin, manager_type: orm, group: Demo, label: Order Statistics }
+        - { name: sonata.admin, manager_type: orm, group: Statistics, label: Order Statistics }
