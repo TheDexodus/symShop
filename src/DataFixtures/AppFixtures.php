@@ -24,6 +24,18 @@ class AppFixtures extends Fixture
 
         $manager->persist($admin);
 
+
+        for ($i = 1; $i <= 10; $i++) {
+            $admin = new Admin();
+            $admin
+                ->setEmail('admin' . $i . '@email.com')
+                ->setUsername('admin' . $i . '@email.com')
+                ->setPlainPassword('123123')
+                ->setEnabled(true);
+
+            $manager->persist($admin);
+        }
+
         $users = [];
         for ($i = 1; $i <= 100; $i++) {
             $user = new User();
@@ -49,23 +61,25 @@ class AppFixtures extends Fixture
 
         $timestamp = strtotime("01 January 2014");
         for ($i = 1; $i <= 25; $i++) {
-            $productsToOrder = new ArrayCollection(); // Products: [0, 1, 2], [1, 2, 3], [2, 3, 4] and etc.
-            $productsToOrder->add($products[$i]);
-            $productsToOrder->add($products[$i + 1]);
-            $productsToOrder->add($products[$i + 2]);
+            for ($j = 0; $j <= $i % 3; $j++) {
+                $productsToOrder = new ArrayCollection();
+                $productsToOrder->add($products[$i]);
+                $productsToOrder->add($products[$i + 1]);
+                $productsToOrder->add($products[$i + 2]);
 
-            $date = new \DateTime();
-            $date->setTimestamp($timestamp);
+                $date = new \DateTime();
+                $date->setTimestamp($timestamp);
 
-            $order = new Order();
-            $order
-                ->setStatus($statuses[$i % 3])  // Numbers: 0, 1, 2, 0, 1, 2, 0 and etc.
-                ->setCreatedDate($date) // Dates: 2014-01-01, 2014-01-02, 2014-01-03 and etc.
-                ->setUser($users[$i * 2 - 1]) // Numbers: 1, 3, 5
-                ->setProducts($productsToOrder)
-                ->setLaterPrice($order->calculateLaterPrice());
+                $order = new Order();
+                $order
+                    ->setStatus($statuses[$i % 3])
+                    ->setCreatedDate($date)
+                    ->setUser($users[$i * 2 - 1 + $j])
+                    ->setProducts($productsToOrder)
+                    ->setLaterPrice($order->calculateLaterPrice());
 
-            $manager->persist($order);
+                $manager->persist($order);
+            }
             $timestamp = strtotime('+1 day', $timestamp);
         }
 
