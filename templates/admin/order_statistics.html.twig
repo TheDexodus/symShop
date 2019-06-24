@@ -1,0 +1,72 @@
+{% extends '@SonataAdmin/standard_layout.html.twig' %}
+
+{% block sonata_admin_content %}
+     <div class="row">
+        <div class="col-xs-12 col-md-12">
+            <div class="box box-primary" style="margin-bottom: 100px;">
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-bordered table-striped table-hover sonata-ba-list">
+                        <thead>
+                        <tr class="sonata-ba-list-field-header">
+                            <th class="sonata-ba-list-field-header-datetime ">
+                                Date
+                            </th>
+                            <th class="sonata-ba-list-field-header-text  sonata-ba-list-field-header-order-asc ">
+                                Count
+                            </th>
+                            <th class="sonata-ba-list-field-header-text  sonata-ba-list-field-header-order-asc ">
+                                Users
+                            </th>
+                            <th class="sonata-ba-list-field-header-text  sonata-ba-list-field-header-order-asc ">
+                                Price
+                            </th>                                                                                                      </tr>
+                        </thead>
+
+                        <tbody>
+                        {% for date, orders in statistics.ordersByDate %}
+                            <tr>
+                                <td class="sonata-ba-list-field sonata-ba-list-field-datetime">
+                                    <time datetime="2014-01-03T00:00:00+00:00" title="2014-01-03T00:00:00+00:00">
+                                        20{{ date }}
+                                    </time>
+                                </td>
+                                <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                    {{ orders.countOrders }}
+                                </td>
+
+                                <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                    {{ orders.countUsers }}
+                                </td>
+
+                                <td class="sonata-ba-list-field sonata-ba-list-field-number">
+                                    {{ orders.price }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        {% for status, orders in statistics.ordersByStatus %}
+                            <tr>
+                                <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                    <time datetime="2014-01-03T00:00:00+00:00" title="2014-01-03T00:00:00+00:00">
+                                        {{ status|capitalize }} orders
+                                    </time>
+                                </td>
+                                <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                    {{ orders.countOrders }}
+                                </td>
+
+                                <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                    Price
+                                </td>
+
+                                <td class="sonata-ba-list-field sonata-ba-list-field-number">
+                                    {{ orders.price }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -24,6 +24,10 @@ services:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
 
+    service.order.statistics:
+      class: App\Service\OrderStatistics
+      public: true
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
@@ -50,3 +54,12 @@ services:
       arguments: [~, App\Entity\Admin, ~]
       tags:
         - { name: sonata.admin, manager_type: orm, label: 'Admin' }
+
+    app.admin.order_statistics:
+      class: App\Admin\OrderStatisticsAdmin
+      arguments:
+        - ~
+        - ~
+        - App\Controller\OrderStatisticsCRUDController
+      tags:
+        - { name: sonata.admin, manager_type: orm, group: Demo, label: Order Statistics }
