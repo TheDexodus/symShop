@@ -10,9 +10,11 @@ final class OrderStatisticsAdmin extends AbstractAdmin
     protected $baseRoutePattern = 'order_statistics';
     protected $baseRouteName = 'order_statistics';
 
-    protected function configureRoutes(RouteCollection $collection)
+    /**
+     * @param RouteCollection $collection
+     */
+    protected function configureRoutes(RouteCollection $collection): void
     {
-        $collection->add('import');
         $collection->clearExcept(['list']);
     }
 }
