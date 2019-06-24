@@ -2,21 +2,19 @@
 
 namespace App\Controller;
 
-use App\Service\OrderStatistics;
 use Sonata\AdminBundle\Controller\CRUDController;
+use Symfony\Component\HttpFoundation\Response;
 
 class OrderStatisticsCRUDController extends CRUDController
 {
-    public function listAction()
+    /**
+     * @return Response
+     */
+    public function listAction(): Response
     {
         $orderStatistics = $this->container->get('service.order.statistics');
         return $this->renderWithExtraParams('admin/order_statistics.html.twig', [
             'statistics' => $orderStatistics->getStatisticsByOrders(),
         ]);
-    }
-
-    public function importAction(OrderStatistics $orderStatistics)
-    {
-
     }
 }

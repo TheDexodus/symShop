@@ -17,7 +17,10 @@ use Symfony\Component\Form\FormEvents;
 
 final class OrderAdmin extends AbstractAdmin
 {
-    protected function configureFormFields(FormMapper $formMapper)
+    /**
+     * @param FormMapper $formMapper
+     */
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         /** @var Order $order */
         $order = $this->getSubject();
@@ -55,7 +58,10 @@ final class OrderAdmin extends AbstractAdmin
         });
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    /**
+     * @param ListMapper $listMapper
+     */
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->add('status')
@@ -70,7 +76,11 @@ final class OrderAdmin extends AbstractAdmin
             ]);
     }
 
-    public function toString($object)
+    /**
+     * @param $object
+     * @return string
+     */
+    public function toString($object): string
     {
         return 'Order';
     }

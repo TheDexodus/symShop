@@ -62,4 +62,4 @@ services:
         - ~
         - App\Controller\OrderStatisticsCRUDController
       tags:
-        - { name: sonata.admin, manager_type: orm, group: Statistics, label: Order Statistics }
+        - { name: sonata.admin, manager_type: orm, group: Statistics, label: 'Order Statistics' }

@@ -15,7 +15,10 @@ use Symfony\Component\Form\FormEvents;
 
 final class SuperUserAdmin extends AbstractAdmin
 {
-    protected function configureFormFields(FormMapper $formMapper)
+    /**
+     * @param FormMapper $formMapper
+     */
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
             ->add('email', EmailType::class, ['required' => false])
@@ -51,7 +54,10 @@ final class SuperUserAdmin extends AbstractAdmin
         });
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    /**
+     * @param ListMapper $listMapper
+     */
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->add('email')
@@ -65,10 +71,12 @@ final class SuperUserAdmin extends AbstractAdmin
             ]);
     }
 
-    public function toString($object)
+    /**
+     * @param $object
+     * @return string
+     */
+    public function toString($object): string
     {
-        return $object instanceof Admin
-            ? $object->getEmail()
-            : 'Super User';
+        return $object instanceof Admin ? $object->getEmail() : 'Super User';
     }
 }

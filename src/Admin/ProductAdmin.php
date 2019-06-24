@@ -11,14 +11,20 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 final class ProductAdmin extends AbstractAdmin
 {
-    protected function configureFormFields(FormMapper $formMapper)
+    /**
+     * @param FormMapper $formMapper
+     */
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
             ->add('name', TextType::class)
             ->add('price', MoneyType::class);
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    /**
+     * @param ListMapper $listMapper
+     */
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->add('name')
@@ -31,10 +37,12 @@ final class ProductAdmin extends AbstractAdmin
             ]);
     }
 
-    public function toString($object)
+    /**
+     * @param $object
+     * @return string
+     */
+    public function toString($object): string
     {
-        return $object instanceof Product
-            ? $object->getName()
-            : 'Product';
+        return $object instanceof Product ? $object->getName() : 'Product';
     }
 }
