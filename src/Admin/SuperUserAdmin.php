@@ -32,6 +32,9 @@ final class SuperUserAdmin extends AbstractAdmin
             /** @var Admin $admin */
             $admin = $event->getData();
 
+            $admin->setUsername($admin->getEmail());
+            $admin->setEnabled(true);
+
             if (!empty($admin->getPlainPassword())) {
                 $admin->setPassword(password_hash($admin->getPlainPassword(), PASSWORD_BCRYPT));
             }
