@@ -2,10 +2,9 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Admin;
+use App\Entity\User;
 use App\Entity\Order;
 use App\Entity\Product;
-use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -14,7 +13,7 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        $admin = new Admin();
+        $admin = new User();
         $admin
             ->setEmail('admin@email.com')
             ->setUsername('admin@email.com')
@@ -24,25 +23,14 @@ class AppFixtures extends Fixture
 
         $manager->persist($admin);
 
-
-        for ($i = 1; $i <= 10; $i++) {
-            $admin = new Admin();
-            $admin
-                ->setEmail('admin' . $i . '@email.com')
-                ->setUsername('admin' . $i . '@email.com')
-                ->setPlainPassword('123123')
-                ->setEnabled(true);
-
-            $manager->persist($admin);
-        }
-
         $users = [];
         for ($i = 1; $i <= 100; $i++) {
             $user = new User();
             $user
-                ->setEmail('email' . $i . '@gmail.com')
-                ->setFirstName('FirstName' . $i)
-                ->setSecondName('SecondName' . $i);
+                ->setEmail('user' . $i . '@email.com')
+                ->setUsername('user' . $i . '@email.com')
+                ->setPlainPassword('123123')
+                ->setEnabled(true);
             $users[] = $user;
             $manager->persist($user);
         }

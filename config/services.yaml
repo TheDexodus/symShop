@@ -31,12 +31,6 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-    admin.user:
-        class: App\Admin\UserAdmin
-        arguments: [~, App\Entity\User, ~]
-        tags:
-            - { name: sonata.admin, manager_type: orm, group: Entities, label: 'User' }
-
     admin.order:
         class: App\Admin\OrderAdmin
         arguments: [~, App\Entity\Order, ~]
@@ -49,11 +43,11 @@ services:
       tags:
         - { name: sonata.admin, manager_type: orm, group: Entities, label: 'Product' }
 
-    admin.superuser:
-      class: App\Admin\SuperUserAdmin
-      arguments: [~, App\Entity\Admin, ~]
+    admin.user:
+      class: App\Admin\UserAdmin
+      arguments: [~, App\Entity\User, ~]
       tags:
-        - { name: sonata.admin, manager_type: orm, group: Entities, label: 'Admin' }
+        - { name: sonata.admin, manager_type: orm, group: Entities, label: 'User' }
 
     app.admin.order_statistics:
       class: App\Admin\OrderStatisticsAdmin
