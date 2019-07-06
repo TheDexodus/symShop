@@ -32,6 +32,7 @@ class Order
     private $user;
 
     /**
+     * @Assert\Count(min=1)
      * @ORM\ManyToMany(targetEntity="App\Entity\Product")
      */
     private $products;
