@@ -22,52 +22,69 @@ class Order
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @var int $id
      */
     private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
      * @ORM\JoinColumn(nullable=false)
+     * @var User $user
      */
     private $user;
 
     /**
      * @Assert\Count(min=1)
-     * @ORM\ManyToMany(targetEntity="App\Entity\Product")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Position", cascade={"persist"})
+     * @var Collection|Position[] $positions
      */
-    private $products;
+    private $positions;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      * @Assert\Choice(choices = {"success", "waiting", "canceled"})
+     * @ORM\Column(type="string", length=255)
+     * @var string $status
      */
     private $status;
 
     /**
+     * @Assert\NotBlank()
      * @ORM\Column(type="date")
      */
     private $createdDate;
 
     /**
      * @ORM\Column(type="float")
+     * @var int $laterPrice
      */
     private $laterPrice;
 
     public function __construct()
     {
-        $this->products = new ArrayCollection();
+        $this->positions = new ArrayCollection();
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return User|null
+     */
     public function getUser(): ?User
     {
         return $this->user;
     }
 
+    /**
+     * @param User|null $user
+     * @return Order
+     */
     public function setUser(?User $user): self
     {
         $this->user = $user;
@@ -76,37 +93,52 @@ class Order
     }
 
     /**
-     * @return Collection|Product[]
+     * @return Collection|Position[]
      */
-    public function getProducts(): Collection
+    public function getPositions(): Collection
     {
-        return $this->products;
+        return $this->positions;
     }
 
-    public function addProduct(Product $product): self
+    /**
+     * @param Position $position
+     * @return Order
+     */
+    public function addPosition(Position $position): self
     {
-        if (!$this->products->contains($product)) {
-            $this->products[] = $product;
+        if (!$this->positions->contains($position)) {
+            $this->positions[] = $position;
         }
 
         return $this;
     }
 
-    public function setProducts(Collection $products): self
+    /**
+     * @param Collection|Position[] $position
+     * @return Order
+     */
+    public function setPositions(Collection $position): self
     {
-        $this->products = $products;
+        $this->positions = $position;
 
         return $this;
     }
 
-    public function removeProduct(Product $product): self
+    /**
+     * @param Position $position
+     * @return Order
+     */
+    public function removePosition(Position $position): self
     {
-        if ($this->products->contains($product)) {
-            $this->products->removeElement($product);
+        if ($this->positions->contains($position)) {
+            $this->positions->removeElement($position);
         }
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getStatus(): ?string
     {
         return $this->status;
@@ -119,11 +151,18 @@ class Order
         return $this;
     }
 
+    /**
+     * @return \DateTimeInterface|null
+     */
     public function getCreatedDate(): ?\DateTimeInterface
     {
         return $this->createdDate;
     }
 
+    /**
+     * @param \DateTimeInterface $createdDate
+     * @return Order
+     */
     public function setCreatedDate(\DateTimeInterface $createdDate): self
     {
         $this->createdDate = $createdDate;
@@ -131,11 +170,18 @@ class Order
         return $this;
     }
 
+    /**
+     * @return float|null
+     */
     public function getLaterPrice(): ?float
     {
         return $this->laterPrice;
     }
 
+    /**
+     * @param float $laterPrice
+     * @return Order
+     */
     public function setLaterPrice(float $laterPrice): self
     {
         $this->laterPrice = $laterPrice;
@@ -149,8 +195,8 @@ class Order
     public function calculateLaterPrice(): float
     {
         $price = 0;
-        foreach ($this->getProducts() as $product) {
-            $price += $product->getPrice();
+        foreach ($this->getPositions() as $position) {
+            $price += $position->getProduct()->getPrice() * $position->getCount();
         }
 
         return $price;

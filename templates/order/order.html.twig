@@ -5,21 +5,21 @@
 {% block body %}
     <h1>Order</h1>
     {{ form_start(form) }}
-    <ul id="product-fields-list"
-        data-prototype="{{ form_widget(form.products.vars.prototype)|e }}"
+    <ul id="position-fields-list"
+        data-prototype="{{ form_widget(form.positions.vars.prototype)|e }}"
         data-widget-tags="{{ '<li></li>'|e }}"
         data-widget-counter="{{ form.children|length }}">
-        {% for productField in form.products %}
+        {% for positionField in form.positions %}
             <li>
-                {{ form_errors(productField) }}
-                {{ form_widget(productField) }}
+                {{ form_errors(positionField) }}
+                {{ form_widget(positionField) }}
             </li>
         {% endfor %}
     </ul>
 
     <button type="button"
             class="add-another-collection-widget"
-            data-list-selector="#product-fields-list">Add another product</button>
+            data-list-selector="#position-fields-list">Add another product</button>
     {{ form_end(form) }}
     <a href="{{ path('orderList') }}">Back</a>
     <script type="text/javascript" src="{{ asset('bundles/bmatznerjquery/js/jquery.min.js') }}"></script>

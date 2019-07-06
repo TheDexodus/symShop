@@ -3,8 +3,6 @@
 namespace App\Form;
 
 use App\Entity\Order;
-use App\Entity\Product;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -18,12 +16,8 @@ class OrderType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('products', CollectionType::class, [
-                'entry_type' => EntityType::class,
-                'entry_options' => [
-                    'class' => Product::class,
-                    'choice_label' => 'name',
-                ],
+            ->add('positions', CollectionType::class, [
+                'entry_type' => PositionType::class,
                 'allow_add' => true,
                 'required'   => true,
             ])

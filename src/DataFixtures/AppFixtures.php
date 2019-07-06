@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Position;
 use App\Entity\User;
 use App\Entity\Order;
 use App\Entity\Product;
@@ -50,10 +51,13 @@ class AppFixtures extends Fixture
         $timestamp = strtotime("01 January 2014");
         for ($i = 1; $i <= 25; $i++) {
             for ($j = 0; $j <= $i % 3; $j++) {
-                $productsToOrder = new ArrayCollection();
-                $productsToOrder->add($products[$i]);
-                $productsToOrder->add($products[$i + 1]);
-                $productsToOrder->add($products[$i + 2]);
+                $positionsToOrder = new ArrayCollection();
+                for ($j = 0; $j < 3; $j++) {
+                    $position = new Position();
+                    $position->setProduct($products[$i + $j]);
+                    $position->setCount((($i + $j) % 2) + 1);
+                    $positionsToOrder->add($position);
+                }
 
                 $date = new \DateTime();
                 $date->setTimestamp($timestamp);
@@ -63,7 +67,7 @@ class AppFixtures extends Fixture
                     ->setStatus($statuses[$i % 3])
                     ->setCreatedDate($date)
                     ->setUser($users[$i * 2 - 1 + $j])
-                    ->setProducts($productsToOrder)
+                    ->setPositions($positionsToOrder)
                     ->setLaterPrice($order->calculateLaterPrice());
 
                 $manager->persist($order);

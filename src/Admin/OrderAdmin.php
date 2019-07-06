@@ -3,8 +3,8 @@
 namespace App\Admin;
 
 use App\Entity\Order;
-use App\Entity\Product;
 use App\Entity\User;
+use App\Form\PositionType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -39,13 +39,10 @@ final class OrderAdmin extends AbstractAdmin
                 'disabled' => !empty($order->getId()),
 
             ])
-            ->add('products', CollectionType::class, [
-                'entry_type' => EntityType::class,
-                'entry_options' => [
-                    'class' => Product::class,
-                    'choice_label' => 'name',
-                ],
+            ->add('positions', CollectionType::class, [
+                'entry_type' => PositionType::class,
                 'allow_add' => true,
+                'required'   => true,
                 'disabled' => !empty($order->getId()),
             ]);
         $formMapper->getFormBuilder()->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
