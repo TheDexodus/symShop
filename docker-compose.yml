@@ -11,7 +11,7 @@ services:
     volumes:
       - .docker/mysql:/var/lib/mysql
     ports:
-      - "3666:3306"
+      - "${DB_PORT}:3306"
 
   nginx:
     image: nginx:1.15.11
@@ -23,7 +23,7 @@ services:
     depends_on:
      - php-fpm
     ports:
-     - "8666:8001"
+     - "${NGINX_PORT}:8001"
 
   php-cli:
     build: ./.docker/php-cli
