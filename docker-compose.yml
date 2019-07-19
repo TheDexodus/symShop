@@ -1,45 +1,59 @@
-version: '3'
+version: '3.7'
 
 services:
-  mysql:
-    image: mysql:5.7
+  pgsql:
+    image: postgres:11.3
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      - TZ=Europe/Minsk
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    command: >
+      postgres
+        -c listen_addresses=*
     volumes:
-      - .docker/mysql:/var/lib/mysql
+      - pgdata_11_3:/var/lib/postgresql/data
     ports:
-      - "${DB_PORT}:3306"
+      - ${DB_PORT}:5432
+
+  php-fpm:
+    build:
+      context: .
+      dockerfile: ./docker/php/fpm.Dockerfile
+    depends_on:
+      - pgsql
+    volumes:
+      - ./:/var/www/app.loc:delegated
+      - ./docker/php/php.ini:/usr/local/etc/php/php.ini
+    environment:
+      XDEBUG_CONFIG: remote_host=${XDEBUG_REMOTE_HOST} remote_port=${XDEBUG_REMOTE_PORT}
+      PHP_IDE_CONFIG: serverName=app
+
+  php-cli:
+    build:
+      context: .
+      dockerfile: ./docker/php/cli.Dockerfile
+    depends_on:
+      - pgsql
+    volumes:
+      - ./:/var/www/app.loc:delegated
+      - ./docker/php/php.ini:/usr/local/etc/php/php.ini
+    environment:
+      XDEBUG_CONFIG: remote_host=${XDEBUG_REMOTE_HOST} remote_port=${XDEBUG_REMOTE_PORT}
+      PHP_IDE_CONFIG: serverName=simple-app
+    tty: true
 
   nginx:
     image: nginx:1.15.11
     volumes:
-     - .docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
-     - ./:/var/www/symshop.loc
+      - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./:/var/www/app.loc:delegated
     links:
-     - php-fpm
+      - php-fpm
     depends_on:
-     - php-fpm
+      - php-fpm
     ports:
-     - "${NGINX_PORT}:8001"
+      - "${NGINX_PORT}:8001"
 
-  php-cli:
-    build: ./.docker/php-cli
-    volumes:
-     - ./:/var/www/symshop.loc
-     - .docker/php-cli/php.ini:/usr/local/etc/php/php.ini
-    environment:
-      PHP_IDE_CONFIG: serverName=symshop
-      XDEBUG_CONFIG: remote_host=${XDEBUG_REMOTE_HOST}
-    tty: true
-
-  php-fpm:
-    build: ./.docker/php-fpm
-    volumes:
-     - ./:/var/www/symshop.loc
-     - .docker/php-fpm:/usr/local/etc/php/php.ini
-    environment:
-      PHP_IDE_CONFIG: serverName=symshop
-      XDEBUG_CONFIG: remote_host=${XDEBUG_REMOTE_HOST}
+volumes:
+  pgdata_11_3:

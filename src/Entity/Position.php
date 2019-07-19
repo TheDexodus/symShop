@@ -21,9 +21,9 @@ class Position
 
     /**
      * @Assert\NotBlank()
-     * @Assert\Unique()
      * @ORM\ManyToOne(targetEntity="App\Entity\Product")
      * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(unique=true)
      * @var Product $product
      */
     private $product;
