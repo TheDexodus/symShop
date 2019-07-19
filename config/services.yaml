@@ -24,8 +24,7 @@ services:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
 
-    service.order.statistics:
-      class: App\Service\OrderStatistics
+    App\Service\OrderStatistics:
       public: true
 
     # add more service definitions when explicit configuration is needed

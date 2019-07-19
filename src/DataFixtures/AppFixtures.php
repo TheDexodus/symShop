@@ -25,7 +25,7 @@ class AppFixtures extends Fixture
         $manager->persist($admin);
 
         $users = [];
-        for ($i = 1; $i <= 100; $i++) {
+        for ($i = 1; $i <= 30; $i++) {
             $user = new User();
             $user
                 ->setEmail('user' . $i . '@email.com')
@@ -49,29 +49,30 @@ class AppFixtures extends Fixture
         $statuses = [Order::STATUS_CANCELED, Order::STATUS_WAITING, Order::STATUS_SUCCESS];
 
         $timestamp = strtotime("01 January 2014");
-        for ($i = 1; $i <= 25; $i++) {
-            for ($j = 0; $j <= $i % 3; $j++) {
-                $positionsToOrder = new ArrayCollection();
-                for ($j = 0; $j < 3; $j++) {
-                    $position = new Position();
-                    $position->setProduct($products[$i + $j]);
-                    $position->setCount((($i + $j) % 2) + 1);
-                    $positionsToOrder->add($position);
-                }
+        for ($i = 1; $i <= 25; $i += 2) {
+            $positionsToOrder = new ArrayCollection();
 
-                $date = new \DateTime();
-                $date->setTimestamp($timestamp);
+            $position = new Position();
+            $position->setProduct($products[$i]);
+            $position->setCount(1);
+            $positionsToOrder->add($position);
+            $position2 = new Position();
+            $position2->setProduct($products[$i + 1]);
+            $position2->setCount(2);
+            $positionsToOrder->add($position2);
 
-                $order = new Order();
-                $order
-                    ->setStatus($statuses[$i % 3])
-                    ->setCreatedDate($date)
-                    ->setUser($users[$i * 2 - 1 + $j])
-                    ->setPositions($positionsToOrder)
-                    ->setLaterPrice($order->calculateLaterPrice());
+            $date = new \DateTime();
+            $date->setTimestamp($timestamp);
 
-                $manager->persist($order);
-            }
+            $order = new Order();
+            $order
+                ->setStatus($statuses[$i % 3])
+                ->setCreatedDate($date)
+                ->setUser($users[$i])
+                ->setPositions($positionsToOrder)
+                ->setLaterPrice($order->calculateLaterPrice());
+
+            $manager->persist($order);
             $timestamp = strtotime('+1 day', $timestamp);
         }
 
