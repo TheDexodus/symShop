@@ -8,6 +8,7 @@ _P.S. fixtures not loaded_
 ```bash
 cp .env.dist .env
 ```
+###### _Edit the .env file as desired_
 ```bash
 docker-compose up -d --build
 ```
@@ -16,6 +17,9 @@ docker-compose exec php-cli zsh
 ```
 ```bash
 composer install
+```
+```bash
+bin/console doctrine:migrations:migrate --no-interaction
 ```
 _For developers:_
 ```bash

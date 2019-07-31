@@ -40,7 +40,7 @@ services:
       - ./docker/php/php.ini:/usr/local/etc/php/php.ini
     environment:
       XDEBUG_CONFIG: remote_host=${XDEBUG_REMOTE_HOST} remote_port=${XDEBUG_REMOTE_PORT}
-      PHP_IDE_CONFIG: serverName=simple-app
+      PHP_IDE_CONFIG: serverName=app
     tty: true
 
   nginx:
