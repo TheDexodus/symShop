@@ -4,3 +4,4 @@
 /.docker/mysql
 /public/bundles
 /.env
+/bin/.phpunit

@@ -21,9 +21,13 @@ composer install
 ```bash
 bin/console doctrine:migrations:migrate --no-interaction
 ```
-_For developers:_
+######_For developers:_
 ```bash
 bin/console doctrine:fixtures:load
+```
+######_Run tests:_
+```bash
+bin/phpunit
 ```
 ```bash
 exit
